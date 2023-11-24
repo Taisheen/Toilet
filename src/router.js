@@ -9,6 +9,7 @@ import Admin_signup from './components/Admin/Admin_signup.vue'
 
 //ユーザーページ
 import User_basic_page from './components/User/User_basic_page.vue'
+import Toilet_table from './components/Toilet_table.vue'
 
 const routes = [
     { path: '/', component: User_basic_page ,}, //TopPageを表示

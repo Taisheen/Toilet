@@ -14,10 +14,12 @@ import TestPage from "./components/User/User_basic_page.vue";
         </template>
       </v-app-bar>
       <v-main>
+        <router-view> </router-view>
       </v-main>
     </v-app>
   </v-sheet>
 </template>
+
 
 <style scoped>
 .v-app-bar-title {
@@ -28,10 +30,10 @@ import TestPage from "./components/User/User_basic_page.vue";
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: #cdcdcd;
 }
-.v-btn{
+.v-btn {
   background-color: #ffffff;
 }
-.v-main{
+.v-main {
   background-image: url(./assets/bg.avif);
   background-size: cover;
 }
