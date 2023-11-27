@@ -12,7 +12,7 @@ import User_basic_page from './components/User/User_basic_page.vue'
 import Toilet_table from './components/Toilet_table.vue'
 
 const routes = [
-    { path: '/', component: User_basic_page ,}, //TopPageを表示
+    { path: '/', component: Toilet_table ,}, //TopPageを表示
     { path: '/:pathMatch(.*)*', redirect: '/' }, //存在しないパスにアクセスした場合はUser_basic_pageを表示
   ]
 
