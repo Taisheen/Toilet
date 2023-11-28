@@ -1,20 +1,18 @@
 <!-- 
   作成者：柳田 大心
   変更者：
-  画面概要：
+  画面概要：表のテンプレート
 -->
 
-<script setup>
-import { ref, onMounted } from "vue";
-const items = ref([
-  { building_number: "1階", image_url: "src/assets/Toilet_icon_blue.png" },
-  { building_number: "2階", image_url: "src/assets/Toilet_icon_blue.png" },
-  { building_number: "3階", image_url: "src/assets/Toilet_icon_pink.png" },
-  { building_number: "4階", image_url: "src/assets/Toilet_icon_blue.png" },
-  { building_number: "5階", image_url: "src/assets/Toilet_icon_pink.png" },
-  { building_number: "6階", image_url: "src/assets/Toilet_icon_blue.png" },
-  { building_number: "7階", image_url: "src/assets/Toilet_icon_pink.png" },
-]);
+<script>
+import { Toilet_table } from "./data/Toilet_table_data";
+export default {
+  data() {
+    return {
+      Toilet_table,
+    };
+  },
+};
 </script>
 
 <template>
@@ -22,37 +20,7 @@ const items = ref([
     <div id="building_container">
       <div id="building_name">1号館</div>
       <table border="1" id="building_table">
-        <span v-for="item in items" :key="item.building_number">
-          <tr id="building_number">
-            <td>{{ item.building_number }}</td>
-          </tr>
-          <tr id="building_image">
-            <td>
-              <button><img :src="item.image_url" /></button>
-            </td>
-          </tr>
-        </span>
-      </table>
-    </div>
-    <div id="building_container">
-      <div id="building_name">2号館</div>
-      <table border="1" id="building_table">
-        <span v-for="item in items" :key="item.building_number">
-          <tr id="building_number">
-            <td>{{ item.building_number }}</td>
-          </tr>
-          <tr id="building_image">
-            <td>
-              <button><img :src="item.image_url" /></button>
-            </td>
-          </tr>
-        </span>
-      </table>
-    </div>
-    <div id="building_container">
-      <div id="building_name">3号館</div>
-      <table id="building_table">
-        <span v-for="item in items" :key="item.building_number">
+        <span v-for="item in Toilet_table.items" :key="item.building_number">
           <tr id="building_number">
             <td>{{ item.building_number }}</td>
           </tr>
@@ -70,11 +38,12 @@ const items = ref([
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@800&display=swap");
-@media screen and (max-width: 500px){
+@media screen and (max-width: 500px) {
   /* 500px以上700px以下に適用されるCSS（スマホ用） */
   #building_container {
     max-width: 100%;
     text-align: center;
+    overflow-x: auto;
   }
 
   #building_name {
@@ -109,13 +78,14 @@ const items = ref([
     width: 50px;
     height: 50px;
   }
-} 
+}
 
-@media screen and (max-width: 700px) and (min-width: 500px){
+@media screen and (max-width: 700px) and (min-width: 500px) {
   /* 500px以上700px以下に適用されるCSS（スマホ用） */
   #building_container {
     max-width: 100%;
     text-align: center;
+    overflow-x: auto;
   }
 
   #building_name {
@@ -161,6 +131,7 @@ const items = ref([
   #building_container {
     max-width: 100%;
     text-align: center;
+    overflow-x: auto;
   }
 
   #building_name {
@@ -178,7 +149,6 @@ const items = ref([
     background-color: white;
     margin: auto;
     white-space: nowrap;
-   
   }
 
   #building_number {

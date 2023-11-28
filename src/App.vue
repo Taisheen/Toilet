@@ -1,7 +1,7 @@
 <script setup>
 //import HelloWorld from './components/HelloWorld.vue'
 // 確認する場合は、↓のimportのfrom部分を確認したいファイルに変更する。
-import TestPage from "./components/Toilet_table.vue";
+import TestPage from "./components/User/User_basic_page.vue";
 </script>
 
 <template>
