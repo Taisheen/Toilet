@@ -16,7 +16,7 @@ import Toilet_table from './components/Toilet_table.vue'
 
 
 const routes = [
-    { path: '/', component: User_basic_page ,}, 
+    { path: '/', component: Admin_signup,}, //TopPageを表示
     { path: '/:pathMatch(.*)*', redirect: '/' }, //存在しないパスにアクセスした場合はUser_basic_pageを表示
 
     //User_detail_page.vue
@@ -28,6 +28,6 @@ const routes = [
   const router = createRouter({
     history: createWebHistory(),
     routes,
-})
+  })
 
 export default router;
