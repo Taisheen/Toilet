@@ -11,31 +11,51 @@
 
 //パスワードの奴
 import { ref } from 'vue'
+import {firebaseauth} from '../../firebase/usesignup'
 
   const rules = {
-    required: value => !!value || 'Required.',
-    min: v => v.length >= 8 || 'Min 8 characters',
-    emailMatch: () => (`The email and password you entered don't match`),
+    required: value => !!value || '必須.',
+    min: v => v.length >= 8 || '8文字以上',
+    emailMatch: () => (`入力したメールアドレスとパスワードが一致しません`),
   }
 
   const show1 = ref(false)
-  const password = ref('')
-
+  // const password = ref('')
+ 
 </script>
 
+<script >
+export default {
+    mounted(){
+        //画面が表示されたら、入力フォームを空にする
+        // firebaseauth.add_management_user.password1 = '';
+        // firebaseauth.add_management_user.email = '';
+    },
+    data(){
+        return{
+        }
+    },
+    methods:{
+        //ユーザ登録
+        async login(){
+            await firebaseauth.login();
+        },
+
+    }
+}
+</script>
 
 <template>
-  <v-main>
+  <v-main v-if="currentUser == null">
 
     <div id="id">
-      ユーザ名
-      <v-text-field prepend-inner-icon="mdi-account-circle" variant="solo"></v-text-field>
+      メールアドレス
+      <v-text-field prepend-inner-icon="mdi-account-circle" variant="solo" v-model="firebaseauth.email"></v-text-field>
     </div>
 
     <div id="pass">
       パスワード
-      <v-text-field height="50px" prepend-inner-icon="mdi-lock" variant="solo" v-model="password"
-            :append-inner-icon="show1 ? 'mdi-eye-off' : 'mdi-eye'"
+      <v-text-field height="50px" prepend-inner-icon="mdi-lock" variant="solo" v-model="firebaseauth.password1"            :append-inner-icon="show1 ? 'mdi-eye-off' : 'mdi-eye'"
             :rules="[rules.required, rules.min]"
             :type="show1 ? 'text' : 'password'"
             name="input-10-1"
@@ -46,16 +66,12 @@ import { ref } from 'vue'
     </div>
 
     <div id="login">
-      <v-btn block id="button" height="50" color="#cdf9b8"  variant="flat">ログイン</v-btn>
+      <v-btn block id="button" height="50" color="#cdf9b8"  variant="flat" @click="login">ログイン</v-btn>
 
     </div>
 
     <div id="sign">
-      <v-btn variant="text">
-        <a href="">
-          新規登録
-        </a>
-      </v-btn>
+        <router-link to="/Adminsignup">新規登録</router-link>
     </div>
   </v-main>
 </template>

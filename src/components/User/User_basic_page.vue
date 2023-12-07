@@ -1,22 +1,22 @@
 <!-- 
-  作成者：柳田 大心
+  作成者：柳田大心
   変更者：
-  画面概要：Test
+  画面概要：
 -->
 
-<script setup>
+<script>
+import Toilet_table from "../Toilet_table.vue";
 
+export default {
+  components: {
+    Toilet_table,
+  },
+};
 </script>
 
 
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="10">
-        <v-data-table :headers="headers" :items="items"> </v-data-table>
-      </v-col>
-    </v-row>
-  </v-container>
+  <Toilet_table></Toilet_table>
 </template>
 
 

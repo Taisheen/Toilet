@@ -1,12 +1,23 @@
 <script setup>
-//import HelloWorld from './components/HelloWorld.vue'
 // 確認する場合は、↓のimportのfrom部分を確認したいファイルに変更する。
-import TestPage from "./components/User/User_basic_page.vue";
+import { Toilet_table_data } from "./components/data/Toilet_table_data.js";
+//import TopPage from "./components/User/User_detail_page.vue";
+</script>
+
+<script>
+export default {
+  data() {
+    return {
+      Toilet_table_data,
+    };
+  },
+};
 </script>
 
 <template>
   <v-sheet>
     <v-app>
+
       <v-app-bar color="#cdf9b8" elevation="3">
         <v-app-bar-title> toilet </v-app-bar-title>
         <template v-slot:append>
@@ -14,7 +25,7 @@ import TestPage from "./components/User/User_basic_page.vue";
         </template>
       </v-app-bar>
       <v-main>
-        <router-view> </router-view>
+        <router-view />
       </v-main>
     </v-app>
   </v-sheet>

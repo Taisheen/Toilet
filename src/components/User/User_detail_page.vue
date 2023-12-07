@@ -1,16 +1,15 @@
 <!-- 
   作成者：柳田 大心
   変更者：
-  画面概要：表のテンプレート
+  画面概要：トイレマークを押した後のページ
 -->
-
 <script setup>
-import router from "../router";
+import router from "../../router"
 </script>
 
 <script>
-import {Toilet_table_data}  from "./data/Toilet_table_data";
-
+//import Toilet_table from "../Toilet_table.vue";
+import {Toilet_table_data}  from "../data/Toilet_table_data";
 export default {
   data() {
     return {
@@ -19,19 +18,21 @@ export default {
   },
 };
 </script>
+
+
 <template>
   <v-main>
     <div id="building_container">
       <div id="building_name">
-        {{ Toilet_table_data.Buildings[0].building_name }}
+        {{ Toilet_table_data.Buildings[0].building_name }}1階
       </div>
       <table border="1" id="building_table">
         <span
-          v-for="item in Toilet_table_data.Toilet_table_items"
-          :key="item.building_number"
+          v-for="item in Toilet_table_data.Toilet_table_items_detail"
+          :key="item.building_number_detail"
         >
           <tr id="building_number">
-            <td>{{ item.building_number }}</td>
+            <td>{{ item.building_number_detail }}</td>
           </tr>
           <tr id="building_image">
             <td>
@@ -48,7 +49,6 @@ export default {
     </div>
   </v-main>
 </template>
-
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@800&display=swap");
