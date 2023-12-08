@@ -19,14 +19,8 @@ const routes = [
     { path: '/', component: Admin_login,}, //TopPageを表示
     { path: '/:pathMatch(.*)*', redirect: '/' }, //存在しないパスにアクセスした場合はUser_basic_pageを表示
     { path: '/Adminlogin', component:Admin_login,},
-    { path: '/Adminsignup', component:Admin_signup,}
-  ]
-
-    //User_detail_page.vue
-    {
-      path: '/User_detail_page',
-      component: User_detail_page
-    }, 
+    { path: '/Adminsignup', component:Admin_signup,},
+    { path: '/User_detail_page', component: User_detail_page }, 
   ]
   const router = createRouter({
     history: createWebHistory(),
