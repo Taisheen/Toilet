@@ -2,17 +2,38 @@
 // 確認する場合は、↓のimportのfrom部分を確認したいファイルに変更する。
 import { Toilet_table_data } from "./components/data/Toilet_table_data.js";
 //import TopPage from "./components/User/User_detail_page.vue";
+import {firebaseauth} from './firebase/usesignup'
+import { getAuth } from "firebase/auth";
+
 </script>
 
 <script>
 export default {
+  mounted(){
+  },
+
   data() {
     return {
       Toilet_table_data,
     };
   },
-};
+
+  methods:{
+          //ユーザ登録
+          async logout(){
+              await firebaseauth.logout();
+              alert('ログアウト')
+          },
+      },
+
+  }
+
+
 </script>
+
+
+
+//クリックしょりログアウトする
 
 <template>
   <v-sheet>
@@ -21,7 +42,13 @@ export default {
       <v-app-bar color="#cdf9b8" elevation="3">
         <v-app-bar-title> toilet </v-app-bar-title>
         <template v-slot:append>
-          <v-btn color="black" elevation="1" rounded>管理者ログイン</v-btn>
+          <v-btn v-if="firebaseauth.login_log==false"
+          color="black" elevation="1" rounded onclick="location.href='./Admin/Admin_login'">管理者ログイン
+          </v-btn>
+          <v-btn v-if="firebaseauth.login_log==true" 
+          @click="logout"
+          color="black" elevation="1" rounded>ログアウト
+          </v-btn>
         </template>
       </v-app-bar>
       <v-main>

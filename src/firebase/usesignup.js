@@ -29,6 +29,7 @@ import {
         
       // },
 
+      login_log:false,
       email: '',
       password1: '',
       password2: '',
@@ -77,6 +78,7 @@ import {
             const user = userCredential.user;
             console.log(user);
             alert("ログイン成功")
+            this.login_log=true
           })
           .catch((error) => {
             // 失敗時処理
@@ -125,6 +127,22 @@ import {
             this.currentUser = null;
           }
         });
+      },
+
+      //ログアウト処理
+      async logout() {
+        //ログアウト確認
+        if (confirm("ログアウトしますか？")) {
+            //ログアウト処理
+            signOut(getAuth()).then(() => {
+
+                //ログアウト処理
+                alert("ログアウトしました。");
+                //routerの履歴を削除
+                router.go(0);
+                return;
+            })
+        }
       },
       
     })
