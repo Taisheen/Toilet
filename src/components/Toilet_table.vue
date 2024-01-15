@@ -10,41 +10,37 @@ import router from "../router";
 
 <script>
 import {Toilet_table_data}  from "./data/Toilet_table_data";
-
+import { FireStore }  from "../firebase/firestore";
 export default {
+  mounted(){
+    FireStore.getData()
+  },
   data() {
     return {
       Toilet_table_data,
+      FireStore
     };
-  },
+  }, 
+  //画像ファイル
+  asset:[
+    { unused: "src/assets/Toilet_icon_blue.png" },
+    { used: "src/assets/Toilet_icon_pink.png" }
+  ]
 };
 </script>
 <template>
   <v-main>
-    <div id="building_container">
+    <div id="building_container" v-for="buildings in FireStore.Toilet_table_items_db.buildings" :key="buildings">
       <div id="building_name">
-        {{ Toilet_table_data.Buildings[0].building_name }}
+       {{buildings.name}}
       </div>
-      <table border="1" id="building_table">
-        <span
-          v-for="item in Toilet_table_data.Toilet_table_items"
-          :key="item.building_number"
-        >
-          <tr id="building_number">
-            <td>{{ item.building_number }}</td>
-          </tr>
-          <tr id="building_image">
-            <td>
-              <button
-                :id="'button' + item.button_id"
-                @click="router.push('/User_detail_page')"
-              >
-                <img :src="item.image_url" />
-              </button>
-            </td>
-          </tr>
-        </span>
-      </table>
+      <div id="building_floors" v-for="floors in buildings.floors" :key="floors">
+        {{floors.name}}
+      </div>
+      <p></p>
+      <div id="Toilet_image" v-for="Toilet in buildings.floors" :key="Toilet">
+        <img src="src/assets/Toilet_icon_blue.png">
+      </div>
     </div>
   </v-main>
 </template>
@@ -66,31 +62,23 @@ export default {
     font-size: 40px;
     font-family: "Noto Sans JP", sans-serif;
   }
-
-  #building_table {
-    border-radius: 10px;
-    border-color: black;
-    border-style: solid;
-    border-width: 3px;
-    background-color: white;
-    margin: auto;
-    white-space: nowrap;
-  }
-
-  #building_number {
+  #building_floors{
+    text-align: center;
+    font-size: 30px;
     font-family: "Noto Sans JP", sans-serif;
-    font-size: 20px;
+    display: inline-block;
+    padding: 0px 50px;
+    border: 2px solid black;
     background-color: white;
   }
-  #building_image:hover {
-    position: relative;
-    top: 2pt;
-    left: 1pt;
+  #Toilet_image img{
+    height: 100px;
+    width: 100px;
+    padding: auto;
+    margin: 2px;
   }
-
-  img {
-    width: 50px;
-    height: 50px;
+  #Toilet_image{
+    display: inline-block;
   }
 }
 
@@ -108,36 +96,23 @@ export default {
     font-size: 40px;
     font-family: "Noto Sans JP", sans-serif;
   }
-
-  #building_table {
-    border-radius: 10px;
-    border-color: black;
-    border-style: solid;
-    border-width: 3px;
-    background-color: white;
-    margin: auto;
-    white-space: nowrap;
-  }
-
-  #building_number {
+  #building_floors{
+    text-align: center;
+    font-size: 30px;
     font-family: "Noto Sans JP", sans-serif;
-    font-size: 20px;
+    display: inline-block;
+    padding: 0px 50px;
+    border: 2px solid black;
     background-color: white;
   }
-  #building_image:hover {
-    position: relative;
-    top: 2pt;
-    left: 1pt;
+  #Toilet_image img{
+    height: 100px;
+    width: 100px;
+    padding: auto;
+    margin: 2px;
   }
-
-  img {
-    width: 75px;
-    height: 75px;
-  }
-
-  .building-image button img {
-    max-width: 50px;
-    height: auto;
+  #Toilet_image{
+    display: inline-block;
   }
 }
 @media screen and (min-width: 701px) {
@@ -155,35 +130,26 @@ export default {
     font-family: "Noto Sans JP", sans-serif;
   }
 
-  #building_table {
-    border-radius: 10px;
-    border-color: black;
-    border-style: solid;
-    border-width: 3px;
-    background-color: white;
-    margin: auto;
-    white-space: nowrap;
-  }
-
-  #building_number {
+  #building_floors{
+    text-align: center;
+    font-size: 30px;
     font-family: "Noto Sans JP", sans-serif;
-    font-size: 20px;
+    display: inline-block;
+    padding: 0px 50px;
+    border: 2px solid black;
     background-color: white;
-  }
-  #building_image:hover {
-    position: relative;
-    top: 2pt;
-    left: 1pt;
+    flex: 1;
   }
 
-  img {
-    width: 100px;
-    height: 100px;
-  }
-
-  .building-image button img {
-    max-width: 50px;
+  #Toilet_image img{
     height: auto;
+    width: 150px;
+    padding: auto;
+    margin: 1px;
   }
+  #Toilet_image{
+    display: inline-block;
+  }
+ 
 }
 </style>

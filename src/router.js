@@ -20,7 +20,8 @@ const routes = [
     { path: '/:pathMatch(.*)*', redirect: '/' }, //存在しないパスにアクセスした場合はUser_basic_pageを表示
     { path: '/Adminlogin', component:Admin_login,},
     { path: '/Adminsignup', component:Admin_signup,},
-    { path: '/User_detail_page', component: User_detail_page }, 
+    { path: '/User_detail_page', component: User_detail_page },
+    { path: '/User_basic_page', component: User_basic_page },
   ]
   const router = createRouter({
     history: createWebHistory(),
