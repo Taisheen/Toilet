@@ -9,8 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chenfengyuan/vue-qrcode": "^2.0.0",
     "firebase": "^10.7.0",
-    "vue": "^3.3.4",
+    "vue": "^3.4.14",
     "vue-router": "^4.2.5",
     "vuetify": "^3.4.2"
   },
