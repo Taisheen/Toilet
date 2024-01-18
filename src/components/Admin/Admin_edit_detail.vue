@@ -5,13 +5,12 @@
 -->
 
 <script setup>
-import { indexedDBLocalPersistence } from 'firebase/auth';
-import { VTextField } from 'vuetify/lib/components/index.mjs';
-
+import { FireStore} from "../../firebase/firestore"
 
 </script>
 
 <script>
+
 export default {
   data() {
     return {
@@ -31,11 +30,6 @@ export default {
         }
       },
 
-    selectedImage(index){
-        selectindex=index
-
-    },
-  
 
     //ファイル画像表示
     openFileInput() {
@@ -58,6 +52,26 @@ export default {
 
       // 選択後に input type="file" 要素をリセット
       this.$refs.fileInput.value = null;
+    },
+    async uploadImage() {
+      if (!this.selectedImage) {
+        console.error('No file selected.');
+        return;
+      }
+
+    FireStore.update(this.selectedImage);  
+      // const storage = getStorage();
+      // const storageReference = storageRef(storage, 'Admin/' + Date.now());
+      
+      // try {
+      //   // ImagePickerで選択された画像がファイルURIの場合、putメソッドを使用してアップロード
+      //   const response = await fetch(this.selectedImage);
+      //   const blob = await response.blob();
+      //   await uploadBytes(storageReference, blob);
+      //   console.log('File uploaded successfully.');
+      // } catch (error) {
+      //   console.error('Error uploading file:', error.message);
+      // }
     },
   },
 };
@@ -146,7 +160,7 @@ function Click() {
           </v-col>
           <v-col>
             <div id="update">
-            <v-btn color="#cdf9b8">更新</v-btn>
+            <v-btn @click="uploadImage" color="#cdf9b8">更新</v-btn>
             </div>
           </v-col>
       </v-row>
