@@ -33,6 +33,7 @@ export const FireStore = reactive({
     },
 
     async updatedetail(selectedImage,addmemo){
+
       const storage = getStorage();
       const storageReference = storageRef(storage, 'Admin/'+firebaseauth.currentUser.uid+'/' + Date.now());
       
