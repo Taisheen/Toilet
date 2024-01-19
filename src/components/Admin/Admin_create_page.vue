@@ -7,58 +7,73 @@
   export default {
     data() {
       return {
-        buildings: []
+        buildings: [
+          {
+            buildingName:'',
+            floors: []
+          }
+          
+        ]
       };
     },
     methods: {
-      addElement() {
-        this.buildings.push({
-          stairs: this.buildings.length + 1
-        });
+      addElement(index1) {
+        if(this.buildings[index1].floors.length == 0 && index1 == this.buildings.length - 1) {
+          this.buildings.push(
+            {
+              buildingName:'',
+              floors: []
+            }
+          )
+        }
+        this.buildings[index1].floors.push(
+          {
+            stairsName: '',
+            toiletNumber: '',
+          }
+        );
       },
-      removeElement() {
-        if(this.buildings.length > 0) { 
+      removeElement(index1) {
+        if (this.buildings[index1].floors.length > 0) {
+          this.buildings[index1].floors.pop();
+        }
+        // if(this.buildings[this.buildings.length - 2].floors.length == 0){
+        //   this.buildings.pop();
+        //   if(this.buildings[this.buildings.length - 2].floors.length == 0){
+        //     this.buildings.pop();
+        //   }
+        // }
+        while(this.buildings[this.buildings.length - 2].floors.length == 0){
           this.buildings.pop();
         }
       }
     },
-  };
+  }
 </script>
 
 <template>
-  <div class="a">
-    <input type="text" class="building-name" name="building-name" placeholder="名称を入力してください    例）一号館">
+  <div v-for="(element1, index1) in buildings" :key="buildings" class="a">
+    <input v-model="element1.buildingName" type="text" class="building-name" name="building-name" placeholder="名称を入力してください 例）一号館">
     <div class="container">
-      <button class="btn" @click="removeElement"><strong>―</strong></button>
-      <button class="btn" @click="addElement"><strong>+</strong></button>
+      <button class="btn" @click="removeElement(index1)"><strong>―</strong></button>
+      <button class="btn" @click="addElement(index1)"><strong>+</strong></button>
       <div class="toilet-container">
-        <div class="rounded-container">
-          <input class="toilet-stairs-name" type="text" placeholder="1階">
+        <div v-for="(element2, index2) in element1.floors" :key="floors" class="rounded-container">
+          <input v-model="element2.stairsName" type="text" :placeholder="(index2 + 1) + '階 '">
           <img src="../../assets/Toilet_icon_blue.png" alt="トイレ">
-          <input type="text" placeholder="個数">
-        </div>
-        <div v-for="(element, index) in buildings" :key="index" class="rounded-container">
-          <input class="toilet-stairs-name" type="text" :placeholder="(index + 2) + '階 '">
-          <img src="../../assets/Toilet_icon_blue.png" alt="トイレ">
-          <input type="text" placeholder="個数">
+          <input v-model="element2.toiletNumber" type="number" max="50" min="1" placeholder="個数">
         </div>
       </div>
     </div>
   </div>
 </template>
 
-
 <style scoped>
-  .a {
-    border: 1px solid black;
-  }
   .container {
-    border: 1px solid black;
     display: flex;
     margin: 2%;
   }
   .toilet-container {
-    border: 1px solid black;
     display: flex;
     flex-wrap: wrap;
     width: 90%;
@@ -109,6 +124,11 @@
     outline: none;
   }
 
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    opacity: 1;
+  }
+
   img {
     border-top: 1px solid black;
     border-bottom: 1px solid black;
@@ -121,10 +141,14 @@
       min-width: 66px;
     }
   }
-
+  
   @media screen and (max-width: 500px) {
     .rounded-container {
       min-width: 50px;
+    }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      display: none;
     }
   }
 </style>
