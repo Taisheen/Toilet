@@ -1,5 +1,5 @@
 import { ref, reactive } from "vue";
-import {getFirestore , doc, getDoc } from "firebase/firestore";
+import {getFirestore , doc, getDoc ,setDoc,updateDoc,arrayUnion} from "firebase/firestore";
 
 import { getStorage, ref as storageRef, uploadBytes } from 'firebase/storage';
 import { getAuth } from "firebase/auth";
@@ -12,6 +12,9 @@ export const FireStore = reactive({
 
     //firebaseから取得するID
     Toilet_ID: "mJWV67TP4brb6Iw0t3OP", //仮用のID
+
+    Select_Building:0,
+    Select_Floors:1,
 
     //firebaseからデータ(Toiletコレクション)を取得する関数
     async getData() {
@@ -29,19 +32,45 @@ export const FireStore = reactive({
         }
     },
 
-    async update(selectedImage){
+    async updatedetail(selectedImage,addmemo){
       const storage = getStorage();
       const storageReference = storageRef(storage, 'Admin/'+firebaseauth.currentUser.uid+'/' + Date.now());
       
-      try {
-        // ImagePickerで選択された画像がファイルURIの場合、putメソッドを使用してアップロード
-        const response = await fetch(selectedImage);
-        const blob = await response.blob();
-        await uploadBytes(storageReference, blob);
-        alert("更新しました")
-        console.log('File uploaded successfully.');
-      } catch (error) {
-        console.error('Error uploading file:', error.message);
-      }
-    }
+
+      if(selectedImage){
+        try {
+          // ImagePickerで選択された画像がファイルURIの場合、putメソッドを使用してアップロード
+          const response = await fetch(selectedImage);
+          const blob = await response.blob();
+          await uploadBytes(storageReference, blob);
+          alert("更新しました")
+          console.log('File uploaded successfully.');
+        } catch (error) {
+          console.error('Error uploading file:', error.message);
+        }
+      }  
+
+      const user=firebaseauth.currentUser.uid
+
+      // if (user) {
+        this.Toilet_ID
+        const db = getFirestore()
+
+        // 更新対象のドキュメントへのパスを構築
+        const docRef = doc(db, "Toilet", this.Toilet_ID);
+
+        // フォームをリセット
+        this.newMemo = { content: "" };
+      // } else {
+        // ユーザーがログインしていない場合の処理
+        // console.error("User not authenticated.");
+      // }
+
+
+
+    },
+
+        
+      
+    
 })
