@@ -27,8 +27,10 @@ export const FireStore = reactive({
             // doc.data() will be undefined in this case
             console.log("No such document!");
         }
-    },
-
+    },  
+   Index1: '',
+   Index2: '',
+  
     async update(selectedImage){
       const storage = getStorage();
       const storageReference = storageRef(storage, 'Admin/'+firebaseauth.currentUser.uid+'/' + Date.now());

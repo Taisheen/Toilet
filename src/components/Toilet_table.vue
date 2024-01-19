@@ -21,25 +21,26 @@ export default {
       FireStore
     };
   }, 
-  //画像ファイル
-  asset:[
-    { unused: "src/assets/Toilet_icon_blue.png" },
-    { used: "src/assets/Toilet_icon_pink.png" }
-  ]
+  methods:{
+    GetIndex:function(index1,index2){
+      FireStore.Index1 = index1,
+      FireStore.Index2 = index2
+      router.push('/User_detail_page')
+    }
+  }
 };
 </script>
 <template>
   <v-main>
-    <div id="building_container" v-for="buildings in FireStore.Toilet_table_items_db.buildings" :key="buildings">
+    <div id="building_container" v-for="(buildings, index1) in FireStore.Toilet_table_items_db.buildings" :key="buildings">
       <div id="building_name">
        {{buildings.name}}
       </div>
-      <div id="building_floors" v-for="floors in buildings.floors" :key="floors">
+      <div id="building_floors" v-for="(floors , index2) in buildings.floors" :key="floors">
         {{floors.name}}
-      </div>
-      <p></p>
-      <div id="Toilet_image" v-for="Toilet in buildings.floors" :key="Toilet">
-        <img src="src/assets/Toilet_icon_blue.png">
+        <button id="Toilet_button" @click= "GetIndex(index1,index2)">
+          <img src="src/assets/Toilet_icon_blue.png">
+        </button>
       </div>
     </div>
   </v-main>
@@ -48,12 +49,12 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@800&display=swap");
+/* cssリセット */
 @media screen and (max-width: 500px) {
   /* 500px以上700px以下に適用されるCSS（スマホ用） */
   #building_container {
-    max-width: 100%;
+    margin: auto;
     text-align: center;
-    overflow-x: auto;
   }
 
   #building_name {
@@ -63,31 +64,35 @@ export default {
     font-family: "Noto Sans JP", sans-serif;
   }
   #building_floors{
+    width: 120px;
+    height: 150px;
     text-align: center;
     font-size: 30px;
     font-family: "Noto Sans JP", sans-serif;
     display: inline-block;
-    padding: 0px 50px;
     border: 2px solid black;
     background-color: white;
-  }
-  #Toilet_image img{
-    height: 100px;
-    width: 100px;
-    padding: auto;
     margin: 2px;
+    border-radius: 10px;
   }
-  #Toilet_image{
-    display: inline-block;
+  #Toilet_button img{
+    height: 100px;
+    width: 115px;
+    display: block;
+    border-top: 2px solid black ;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+  }
+  #Toilet_button img:hover{
+    transform:translateY(2.5px);
   }
 }
 
 @media screen and (max-width: 700px) and (min-width: 500px) {
   /* 500px以上700px以下に適用されるCSS（スマホ用） */
   #building_container {
-    max-width: 100%;
+    margin: auto;
     text-align: center;
-    overflow-x: auto;
   }
 
   #building_name {
@@ -96,31 +101,40 @@ export default {
     font-size: 40px;
     font-family: "Noto Sans JP", sans-serif;
   }
+  
   #building_floors{
+    width: 120px;
+    height: 150px;
     text-align: center;
     font-size: 30px;
     font-family: "Noto Sans JP", sans-serif;
     display: inline-block;
-    padding: 0px 50px;
     border: 2px solid black;
     background-color: white;
-  }
-  #Toilet_image img{
-    height: 100px;
-    width: 100px;
-    padding: auto;
     margin: 2px;
+    border-radius: 10px;
   }
-  #Toilet_image{
-    display: inline-block;
+  
+  #Toilet_button img{
+    height: 100px;
+    width: 115px;
+    padding: auto;
+    display: block;
+    border-top: 2px solid black;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+    
   }
+  #Toilet_button img:hover{
+    transform:translateY(2.5px);
+  }
+  
 }
 @media screen and (min-width: 701px) {
   /* 701px以上に適用されるCSS（PC用） */
   #building_container {
-    max-width: 100%;
+    margin: auto;
     text-align: center;
-    overflow-x: auto;
   }
 
   #building_name {
@@ -130,26 +144,30 @@ export default {
     font-family: "Noto Sans JP", sans-serif;
   }
 
+  #Toilet_button img{
+    width: 170px;
+    height: 150px;
+    display: block;
+    border-top: 2px solid black;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius:7px;
+    transition: .3s;
+  }
+
+  #Toilet_button img:hover{
+    transform:translateY(2.5px);
+  }
   #building_floors{
+    width: 175px;
+    height: 200px;
     text-align: center;
     font-size: 30px;
     font-family: "Noto Sans JP", sans-serif;
     display: inline-block;
-    padding: 0px 50px;
     border: 2px solid black;
     background-color: white;
-    flex: 1;
+    margin: 2px;
+    border-radius: 10px;
   }
-
-  #Toilet_image img{
-    height: auto;
-    width: 150px;
-    padding: auto;
-    margin: 1px;
-  }
-  #Toilet_image{
-    display: inline-block;
-  }
- 
 }
 </style>
