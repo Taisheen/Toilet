@@ -17,6 +17,7 @@ export default {
       selectedImage: null,
       elements: [],
       selectindex:'',
+      memo:'',
     };
   },
   methods: {
@@ -53,25 +54,14 @@ export default {
       // 選択後に input type="file" 要素をリセット
       this.$refs.fileInput.value = null;
     },
-    async uploadImage() {
-      if (!this.selectedImage) {
-        console.error('No file selected.');
-        return;
-      }
-
-    FireStore.update(this.selectedImage);  
-      // const storage = getStorage();
-      // const storageReference = storageRef(storage, 'Admin/' + Date.now());
-      
-      // try {
-      //   // ImagePickerで選択された画像がファイルURIの場合、putメソッドを使用してアップロード
-      //   const response = await fetch(this.selectedImage);
-      //   const blob = await response.blob();
-      //   await uploadBytes(storageReference, blob);
-      //   console.log('File uploaded successfully.');
-      // } catch (error) {
-      //   console.error('Error uploading file:', error.message);
+    async updates() {
+      //画像アップロード
+      // if (!this.selectedImage) {
+      //   console.error('No file selected.');
+      //   return;
       // }
+
+    FireStore.updatedetail(this.selectedImage,this.memo);  
     },
   },
 };
@@ -147,8 +137,8 @@ function Click() {
     </v-container>
     <v-img id="image-zu" v-if="selectedImage" :src="selectedImage" max-width="500" max-height="500" />
 
-    <div id="memo">
-    <v-textarea label="メモ" variant="solo"></v-textarea>
+    <div id="memof">
+    <v-textarea id="memo" v-model="memo" label="メモ" variant="solo"></v-textarea>
     </div>
 
     <v-container>
@@ -160,7 +150,7 @@ function Click() {
           </v-col>
           <v-col>
             <div id="update">
-            <v-btn @click="uploadImage" color="#cdf9b8">更新</v-btn>
+            <v-btn @click="updates" color="#cdf9b8">更新</v-btn>
             </div>
           </v-col>
       </v-row>
@@ -302,7 +292,7 @@ function Click() {
   align-items: center;
 }
 
-#memo {
+#memof {
   margin: 5% 20% 0% 20%;
   max-width: 2000px;
   align-items: center;
