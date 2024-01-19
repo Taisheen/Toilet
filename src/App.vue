@@ -13,8 +13,6 @@ import { FireStore }  from "./firebase/firestore";
 
 export default {
   mounted(){
-    // FireStore.getData()
-
     //バックアップ復元用
     // FireStore.Backup_Upload()
   },
