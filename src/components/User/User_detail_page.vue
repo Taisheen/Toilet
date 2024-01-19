@@ -4,16 +4,20 @@
   画面概要：トイレマークを押した後のページ
 -->
 <script setup>
-import router from "../../router"
+import router from "../../router";
 </script>
 
 <script>
-//import Toilet_table from "../Toilet_table.vue";
-import {Toilet_table_data}  from "../data/Toilet_table_data";
+import { Toilet_table_data } from "../data/Toilet_table_data";
+import { FireStore } from "../../firebase/firestore";
 export default {
+  mounted() {
+    FireStore.getData();
+  },
   data() {
     return {
       Toilet_table_data,
+      FireStore,
     };
   },
 };
@@ -24,28 +28,44 @@ export default {
   <v-main>
     <div id="building_container">
       <div id="building_name">
-        {{ Toilet_table_data.Buildings[0].building_name }}1階
+        {{ FireStore.Toilet_table_items_db.buildings[FireStore.Index1].name }}
       </div>
-      <table border="1" id="building_table">
-        <span
-          v-for="item in Toilet_table_data.Toilet_table_items_detail"
-          :key="item.building_number_detail"
-        >
-          <tr id="building_number">
-            <td>{{ item.building_number_detail }}</td>
-          </tr>
-          <tr id="building_image">
-            <td>
-              <button
-                :id="'button' + item.button_id"
-                @click="router.push('/User_detail_page')"
-              >
-                <img :src="item.image_url" />
-              </button>
-            </td>
-          </tr>
-        </span>
-      </table>
+      <div
+        id="building_floors"
+        v-for="floors in FireStore.Toilet_table_items_db.buildings[
+          FireStore.Index1
+        ].floors[FireStore.Index2].sensors"
+        :key="floors"
+      >
+        {{ floors.name }}
+        <button id="Toilet_button">
+          <img src="src/assets/Toilet_icon_blue.png" />
+        </button>
+      </div>
+    </div>
+    <div id="floormap_container">
+      <div id="floormap">
+        <h2>フロア図</h2>
+        <img
+          :src="
+            FireStore.Toilet_table_items_db.buildings[FireStore.Index1].floors[
+              FireStore.Index2
+            ].imagePass
+          "
+        />
+      </div>
+    </div>
+    <div id="memo_container">
+      <div id="memo">
+        <h2>補足情報</h2>
+        <h4>
+        {{
+          FireStore.Toilet_table_items_db.buildings[FireStore.Index1].floors[
+            FireStore.Index2
+          ].memo
+        }}
+        </h4>
+      </div>
     </div>
   </v-main>
 </template>
@@ -55,9 +75,8 @@ export default {
 @media screen and (max-width: 500px) {
   /* 500px以上700px以下に適用されるCSS（スマホ用） */
   #building_container {
-    max-width: 100%;
+    margin: auto;
     text-align: center;
-    overflow-x: auto;
   }
 
   #building_name {
@@ -66,40 +85,62 @@ export default {
     font-size: 40px;
     font-family: "Noto Sans JP", sans-serif;
   }
-
-  #building_table {
-    border-radius: 10px;
-    border-color: black;
-    border-style: solid;
-    border-width: 3px;
-    background-color: white;
-    margin: auto;
-    white-space: nowrap;
-  }
-
-  #building_number {
+  #building_floors {
+    width: 120px;
+    height: 150px;
+    text-align: center;
+    font-size: 30px;
     font-family: "Noto Sans JP", sans-serif;
-    font-size: 20px;
+    display: inline-block;
+    border: 2px solid black;
     background-color: white;
+    margin: 2px;
+    border-radius: 10px;
   }
-  #building_image:hover {
-    position: relative;
-    top: 2pt;
-    left: 1pt;
+  #Toilet_button img {
+    height: 100px;
+    width: 115px;
+    display: block;
+    border-top: 2px solid black;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
   }
-
-  img {
-    width: 50px;
-    height: 50px;
+  #Toilet_button img:hover {
+    transform: translateY(2.5px);
+  }
+  #floormap_container {
+    height: 450px;
+    width: 370px;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    padding: 30px;
+    border: 2px solid black;
+    background: white;
+    border-radius: 20px;
+  }
+  #floormap {
+    font-family: "Noto Sans JP", sans-serif;
+  }
+  #memo_container {
+    height: 450px;
+    width: 370px;
+    margin: auto;
+    padding: 20px;
+    border: 2px solid black;
+    background: white;
+    border-radius: 20px;
+  }
+  #memo{
+    font-family: "Noto Sans JP", sans-serif;
   }
 }
 
 @media screen and (max-width: 700px) and (min-width: 500px) {
   /* 500px以上700px以下に適用されるCSS（スマホ用） */
   #building_container {
-    max-width: 100%;
+    margin: auto;
     text-align: center;
-    overflow-x: auto;
   }
 
   #building_name {
@@ -109,43 +150,66 @@ export default {
     font-family: "Noto Sans JP", sans-serif;
   }
 
-  #building_table {
-    border-radius: 10px;
-    border-color: black;
-    border-style: solid;
-    border-width: 3px;
-    background-color: white;
-    margin: auto;
-    white-space: nowrap;
-  }
-
-  #building_number {
+  #building_floors {
+    width: 120px;
+    height: 150px;
+    text-align: center;
+    font-size: 30px;
     font-family: "Noto Sans JP", sans-serif;
-    font-size: 20px;
+    display: inline-block;
+    border: 2px solid black;
     background-color: white;
-  }
-  #building_image:hover {
-    position: relative;
-    top: 2pt;
-    left: 1pt;
+    margin: 2px;
+    border-radius: 10px;
   }
 
-  img {
-    width: 75px;
-    height: 75px;
+  #Toilet_button img {
+    height: 100px;
+    width: 115px;
+    padding: auto;
+    display: block;
+    border-top: 2px solid black;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
   }
-
-  .building-image button img {
-    max-width: 50px;
-    height: auto;
+  #Toilet_button img:hover {
+    transform: translateY(2.5px);
   }
+  #floormap_container {
+    height: 450px;
+    width: 370px;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    padding: 30px;
+    border: 2px solid black;
+    background: white;
+    border-radius: 20px;
+  }
+  #floormap {
+    font-family: "Noto Sans JP", sans-serif;
+  }
+  #memo_container {
+    height: 450px;
+    width: 370px;
+    margin: auto;
+    margin-top: 30px;
+    padding: 20px;
+    border: 2px solid black;
+    background: white;
+    border-radius: 20px;
+  }
+  #memo{
+    font-family: "Noto Sans JP", sans-serif;
+  }
+  
 }
 @media screen and (min-width: 701px) {
   /* 701px以上に適用されるCSS（PC用） */
   #building_container {
-    max-width: 100%;
+    margin: auto;
+    margin-bottom: 40px;
     text-align: center;
-    overflow-x: auto;
   }
 
   #building_name {
@@ -155,35 +219,56 @@ export default {
     font-family: "Noto Sans JP", sans-serif;
   }
 
-  #building_table {
-    border-radius: 10px;
-    border-color: black;
-    border-style: solid;
-    border-width: 3px;
-    background-color: white;
-    margin: auto;
-    white-space: nowrap;
+  #Toilet_button img {
+    width: 170px;
+    height: 150px;
+    display: block;
+    border-top: 2px solid black;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+    transition: 0.3s;
   }
 
-  #building_number {
+  #Toilet_button img:hover {
+    transform: translateY(2.5px);
+  }
+  #building_floors {
+    width: 175px;
+    height: 200px;
+    text-align: center;
+    font-size: 30px;
     font-family: "Noto Sans JP", sans-serif;
-    font-size: 20px;
+    display: inline-block;
+    border: 2px solid black;
     background-color: white;
-  }
-  #building_image:hover {
-    position: relative;
-    top: 2pt;
-    left: 1pt;
+    margin: 2px;
+    border-radius: 10px;
   }
 
-  img {
-    width: 100px;
-    height: 100px;
+  #floormap_container {
+    height: 500px;
+    width: 400px;
+    margin: auto;
+    margin-bottom: 20px;
+    padding: 40px;
+    border: 2px solid black;
+    background: white;
+    border-radius: 20px;
   }
-
-  .building-image button img {
-    max-width: 50px;
-    height: auto;
+  #floormap {
+    font-family: "Noto Sans JP", sans-serif;
+  }
+  #memo_container {
+    height: 500px;
+    width: 400px;
+    margin: auto;
+    padding: 40px;
+    border: 2px solid black;
+    background: white;
+    border-radius: 20px;
+  }
+  #memo{
+    font-family: "Noto Sans JP", sans-serif;
   }
 }
 </style>

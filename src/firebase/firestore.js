@@ -24,4 +24,7 @@ export const FireStore = reactive({
             console.log("No such document!");
         }
     },
+    
+   Index1: '',
+   Index2: '',
 })
