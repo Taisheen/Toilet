@@ -1,6 +1,10 @@
 import { ref, reactive } from "vue";
 import {getFirestore , doc, getDoc } from "firebase/firestore";
 
+import { getStorage, ref as storageRef, uploadBytes } from 'firebase/storage';
+import { getAuth } from "firebase/auth";
+import { firebaseauth } from "./usesignup";
+
 export const FireStore = reactive({
 
     //firebaseから取得したデータを格納する変数
@@ -23,8 +27,23 @@ export const FireStore = reactive({
             // doc.data() will be undefined in this case
             console.log("No such document!");
         }
-    },
-    
+    },  
    Index1: '',
    Index2: '',
+  
+    async update(selectedImage){
+      const storage = getStorage();
+      const storageReference = storageRef(storage, 'Admin/'+firebaseauth.currentUser.uid+'/' + Date.now());
+      
+      try {
+        // ImagePickerで選択された画像がファイルURIの場合、putメソッドを使用してアップロード
+        const response = await fetch(selectedImage);
+        const blob = await response.blob();
+        await uploadBytes(storageReference, blob);
+        alert("更新しました")
+        console.log('File uploaded successfully.');
+      } catch (error) {
+        console.error('Error uploading file:', error.message);
+      }
+    }
 })

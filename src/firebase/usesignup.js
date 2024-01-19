@@ -76,6 +76,7 @@ import {
           .then((userCredential) => {
             // 成功時処理
             const user = userCredential.user;
+            this.currentUser=user
             console.log(user);
             alert("ログイン成功")
             this.login_log=true

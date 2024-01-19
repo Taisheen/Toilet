@@ -7,16 +7,18 @@ import Admin_login from './components/Admin/Admin_login.vue'
 import Admin_page from './components/Admin/Admin_page.vue'
 import Admin_signup from './components/Admin/Admin_signup.vue'
 
+
 //ユーザーページ
 import User_basic_page from './components/User/User_basic_page.vue'
 import User_detail_page from './components/User/User_detail_page.vue'
+
 
 //Tableのテンプレートページ
 import Toilet_table from './components/Toilet_table.vue'
 
 
 const routes = [
-    { path: '/', component: Admin_login,}, //TopPageを表示
+    { path: '/', component: Admin_edit_detail,}, //TopPageを表示
     { path: '/:pathMatch(.*)*', redirect: '/' }, //存在しないパスにアクセスした場合はUser_basic_pageを表示
     //管理者側
     { path: '/Admin_login', component:Admin_login,},
