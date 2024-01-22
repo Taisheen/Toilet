@@ -1,7 +1,7 @@
 import { ref, reactive } from "vue";
 import {getFirestore , doc, getDoc ,setDoc,updateDoc,arrayUnion, collection, addDoc} from "firebase/firestore";
 
-import { getStorage, ref as storageRef, uploadBytes } from 'firebase/storage';
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL} from 'firebase/storage';
 import { getAuth } from "firebase/auth";
 import { firebaseauth } from "./usesignup";
 

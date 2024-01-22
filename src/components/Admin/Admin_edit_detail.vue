@@ -14,10 +14,9 @@ export default {
     return {
       selectedImage: null,
       elements: [],
-      selectindex: "",
       FireStore,
       selectindex: "",
-      memo: "",
+      addmemo: "",
     };
   },
   methods: {
@@ -53,11 +52,11 @@ export default {
       // 選択後に input type="file" 要素をリセット
       this.$refs.fileInput.value = null;
     },
-    async uploadImage() {
-      if (!this.selectedImage) {
-        console.error("No file selected.");
-        return;
-      }
+    // async uploadImage() {
+    //   if (!this.selectedImage) {
+    //     console.error("No file selected.");
+    //     return;
+    //   }
 
       //FireStore.update(this.selectedImage);
       // const storage = getStorage();
@@ -72,14 +71,14 @@ export default {
       // } catch (error) {
       //   console.error('Error uploading file:', error.message);
 
-      //async updates() {
+      async updates() {
       //画像アップロード
-      // if (!this.selectedImage) {
-      //   console.error('No file selected.');
-      //   return;
-      // }
+      if (!this.selectedImage) {
+        console.error('No file selected.');
+        return;
+      }
 
-      //FireStore.updatedetail(this.selectedImage,this.memo);
+      FireStore.updateDetail(this.selectedImage,this.addmemo);
     },
   },
 };
@@ -202,7 +201,7 @@ function Click() {
     <div id="memof">
       <v-textarea
         id="memo"
-        v-model="memo"
+        v-model="addmemo"
         label="メモ"
         variant="solo"
       ></v-textarea>
@@ -221,7 +220,7 @@ function Click() {
         </v-col>
         <v-col>
           <div id="update">
-            <v-btn @click="uploadImage" color="#cdf9b8">更新</v-btn>
+            <v-btn @click="updates" color="#cdf9b8">更新</v-btn>
           </div>
         </v-col>
       </v-row>
