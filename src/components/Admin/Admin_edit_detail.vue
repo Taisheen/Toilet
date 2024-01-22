@@ -16,6 +16,8 @@ export default {
       elements: [],
       selectindex: "",
       FireStore,
+      selectindex:'',
+      memo:'',
     };
   },
   methods: {
@@ -69,7 +71,15 @@ export default {
       //   console.log('File uploaded successfully.');
       // } catch (error) {
       //   console.error('Error uploading file:', error.message);
+
+    async updates() {
+      //画像アップロード
+      // if (!this.selectedImage) {
+      //   console.error('No file selected.');
+      //   return;
       // }
+
+    FireStore.updatedetail(this.selectedImage,this.memo);  
     },
   },
 };
@@ -191,6 +201,8 @@ function Click() {
 
     <div id="memo">
       <v-textarea label="メモ" variant="solo"></v-textarea>
+    <div id="memof">
+    <v-textarea id="memo" v-model="memo" label="メモ" variant="solo"></v-textarea>
     </div>
 
     <v-container>
@@ -209,6 +221,16 @@ function Click() {
             <v-btn @click="uploadImage" color="#cdf9b8">更新</v-btn>
           </div>
         </v-col>
+          <v-col>
+            <div id="back">
+            <v-btn color="#cdf9b8" onclick="location.href='./Admin/Admin_edit_page'">戻る</v-btn>
+            </div>
+          </v-col>
+          <v-col>
+            <div id="update">
+            <v-btn @click="updates" color="#cdf9b8">更新</v-btn>
+            </div>
+          </v-col>
       </v-row>
     </v-container>
   </v-main>
@@ -345,7 +367,7 @@ function Click() {
   align-items: center;
 }
 
-#memo {
+#memof {
   margin: 5% 20% 0% 20%;
   max-width: 2000px;
   align-items: center;

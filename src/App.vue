@@ -4,17 +4,23 @@ import { Toilet_table_data } from "./components/data/Toilet_table_data.js";
 //import TopPage from "./components/User/User_detail_page.vue";
 import {firebaseauth} from './firebase/usesignup'
 import { getAuth } from "firebase/auth";
+// import { FireStore } from "./firebase/firestore.js";
 
 </script>
 
 <script>
+import { FireStore }  from "./firebase/firestore";
+
 export default {
   mounted(){
+    //バックアップ復元用
+    // FireStore.Backup_Upload()
   },
 
   data() {
     return {
       Toilet_table_data,
+      FireStore,
     };
   },
 
