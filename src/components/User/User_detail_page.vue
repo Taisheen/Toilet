@@ -39,7 +39,7 @@ export default {
       >
         {{ floors.name }}
         <button id="Toilet_button">
-          <img src="src/assets/Toilet_icon_blue.png" />
+          <img src="../../assets/Toilet_icon_blue.png" />
         </button>
       </div>
     </div>
