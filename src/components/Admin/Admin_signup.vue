@@ -53,7 +53,6 @@ export default {
 
 <template>
   <v-main v-if="currentUser == null">
-
     <div id="id">
       メールアドレス
       <v-text-field v-model="firebaseauth.email" prepend-inner-icon="mdi-account-circle" variant="solo"></v-text-field>

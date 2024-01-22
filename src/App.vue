@@ -44,7 +44,6 @@ export default {
 <template>
   <v-sheet>
     <v-app>
-
       <v-app-bar color="#cdf9b8" elevation="3">
         <v-app-bar-title> toilet </v-app-bar-title>
         <template v-slot:append>
@@ -80,5 +79,6 @@ export default {
 .v-main {
   background-image: url(./assets/bg.avif);
   background-size: cover;
+  padding-top: 35px;
 }
 </style>
