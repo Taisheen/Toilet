@@ -26,6 +26,7 @@ const routes = [
     { path: '/Admin_create_page', component:Admin_create_page,},
     { path: '/Admin_edit_page', component:Admin_edit_page,},
     { path: '/Admin_edit_detail', component:Admin_edit_detail,},
+    { path: '/Admin_page', component:Admin_page,},
     //ユーザー側
     { path: '/User_detail_page', component: User_detail_page },
     { path: '/User_basic_page', component: User_basic_page },
