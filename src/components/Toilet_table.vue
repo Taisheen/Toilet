@@ -15,14 +15,14 @@ export default {
   mounted(){
     //パラメータから値を取得し、FireStore.Toilet_Idに代入
     //:がある場合は、パラメータを取得する、その場合、:が含まれてしまうので、replaceで削除
-    if(this.$route.params.id != undefined){
-      FireStore.Toilet_ID = this.$route.params.id.replace(":","")
+    // if(this.$route.params.id != undefined){
+    //   FireStore.Toilet_ID = this.$route.params.id.replace(":","")
       //FireStore.Toilet_table_items_dbにデータを代入
       FireStore.getData()
-    }else{
+    // }else{
       //パラメータがない場合、トイレ一覧画面に遷移
-      alert("パラメータがありません")
-    }
+  //     alert("パラメータがありません")
+  //   }
   },
   data() {
     return {
@@ -42,7 +42,7 @@ export default {
 <template>
   <v-main>
     <div id="building_container" v-for="(buildings, index1) in FireStore.Toilet_table_items_db.buildings" :key="buildings">
-      <div id="building_name">
+      <div id="building_name">  
        {{buildings.name}}
       </div>
       <div id="building_floors" v-for="(floors , index2) in buildings.floors" :key="floors">
@@ -136,8 +136,7 @@ export default {
   }
   #Toilet_button img:hover{
     transform:translateY(2.5px);
-  }
-  
+  } 
 }
 @media screen and (min-width: 701px) {
   /* 701px以上に適用されるCSS（PC用） */

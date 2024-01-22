@@ -30,6 +30,11 @@ export default {
 </script>
 <template>
   <v-main>
+    <div id="QR_domain_container">
+      <div id="QR_domain">
+        QRコード
+      </div>
+    </div>
     <div id="building_container" v-for="(buildings, index1) in FireStore.Toilet_table_items_db.buildings" :key="buildings">
       <div id="building_name">
        {{buildings.name}}
@@ -84,6 +89,20 @@ export default {
   #Toilet_button img:hover{
     transform:translateY(2.5px);
   }
+  #QR_domain_container{
+    border: 2px solid black;
+    height: 150px;
+    width: 250px;
+    margin:auto;
+    margin-bottom: 0px;
+    background-color:white;
+    border-radius: 20px;
+  }
+  #QR_domain{
+    text-align: center;
+    font-family: "Noto Sans JP", sans-serif;
+
+  }
 }
 
 @media screen and (max-width: 700px) and (min-width: 500px) {
@@ -126,6 +145,20 @@ export default {
   #Toilet_button img:hover{
     transform:translateY(2.5px);
   }
+  #QR_domain_container{
+    border: 2px solid black;
+    height: 150px;
+    width: 250px;
+    margin:auto;
+    margin-bottom: 0px;
+    background-color:white;
+    border-radius: 20px;
+  }
+  #QR_domain{
+    text-align: center;
+    font-family: "Noto Sans JP", sans-serif;
+
+  }
   
 }
 @media screen and (min-width: 701px) {
@@ -166,6 +199,20 @@ export default {
     background-color: white;
     margin: 2px;
     border-radius: 10px;
+  }
+  #QR_domain_container{
+    border: 2px solid black;
+    height: 150px;
+    width: 250px;
+    margin:auto;
+    margin-bottom: 0px;
+    background-color:white;
+    border-radius: 20px;
+  }
+  #QR_domain{
+    text-align: center;
+    font-family: "Noto Sans JP", sans-serif;
+
   }
 }
 </style>
