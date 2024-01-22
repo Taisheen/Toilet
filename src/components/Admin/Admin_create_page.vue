@@ -37,12 +37,6 @@
         if (this.buildings[index1].floors.length > 0) {
           this.buildings[index1].floors.pop();
         }
-        // if(this.buildings[this.buildings.length - 2].floors.length == 0){
-        //   this.buildings.pop();
-        //   if(this.buildings[this.buildings.length - 2].floors.length == 0){
-        //     this.buildings.pop();
-        //   }
-        // }
         while(this.buildings[this.buildings.length - 2].floors.length == 0){
           this.buildings.pop();
         }
@@ -52,15 +46,15 @@
 </script>
 
 <template>
-  <div v-for="(element1, index1) in buildings" :key="buildings" class="a">
+  <div v-for="(element1, index1) in buildings" :key="index1" class="a">
     <input v-model="element1.buildingName" type="text" class="building-name" name="building-name" placeholder="名称を入力してください 例）一号館">
     <div class="container">
       <button class="btn" @click="removeElement(index1)"><strong>―</strong></button>
       <button class="btn" @click="addElement(index1)"><strong>+</strong></button>
       <div class="toilet-container">
-        <div v-for="(element2, index2) in element1.floors" :key="floors" class="rounded-container">
+        <div v-for="(element2, index2) in element1.floors" :key="index2" class="rounded-container">
           <input v-model="element2.stairsName" type="text" :placeholder="(index2 + 1) + '階 '">
-          <img src="../../assets/Toilet_icon_blue.png" alt="トイレ">
+          <img src="../../assets/Toilet_icon_blue.png" alt="トイレアイコン">
           <input v-model="element2.toiletNumber" type="number" max="50" min="1" placeholder="個数">
         </div>
       </div>
