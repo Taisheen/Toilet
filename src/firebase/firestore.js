@@ -21,17 +21,25 @@ export const FireStore = reactive({
 
     //firebaseからデータ(Toiletコレクション)を取得する関数
     async getData() {
-        const db = getFirestore()
-        //firebaseからデータを取得
-        const docRef = doc(db, "Toilet", this.Toilet_ID);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            //firebaseから取得したデータを格納
-            this.Toilet_table_items_db = docSnap.data();
-            console.log("取得データ", this.Toilet_table_items_db);
-        } else {
-            console.log("ドキュメントの取得に失敗しました・存在しないドキュメントです");
-        }
+      //idが空、””の場合、処理を終了
+      if(this.Toilet_ID == "" || this.Toilet_ID == null) {
+        alert("IDが空です")
+        return;
+      }
+
+
+      const db = getFirestore()
+      console.log("データを取得・・・・・・・・：", this.Toilet_ID);
+      //firebaseからデータを取得
+      const docRef = doc(db, "Toilet", this.Toilet_ID);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+          //firebaseから取得したデータを格納
+          this.Toilet_table_items_db = docSnap.data();
+          console.log("取得データ", this.Toilet_table_items_db);
+      } else {
+          console.log("ドキュメントの取得に失敗しました・存在しないドキュメントです");
+      }
     },
 
     //Firestoreに施設情報を追加する関数

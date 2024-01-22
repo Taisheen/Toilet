@@ -13,7 +13,16 @@ import {Toilet_table_data}  from "./data/Toilet_table_data";
 import { FireStore }  from "../firebase/firestore";
 export default {
   mounted(){
-    FireStore.getData()
+    //パラメータから値を取得し、FireStore.Toilet_Idに代入
+    //:がある場合は、パラメータを取得する、その場合、:が含まれてしまうので、replaceで削除
+    if(this.$route.params.id != undefined){
+      FireStore.Toilet_ID = this.$route.params.id.replace(":","")
+      //FireStore.Toilet_table_items_dbにデータを代入
+      FireStore.getData()
+    }else{
+      //パラメータがない場合、トイレ一覧画面に遷移
+      alert("パラメータがありません")
+    }
   },
   data() {
     return {
