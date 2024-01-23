@@ -18,8 +18,8 @@ import Toilet_table from './components/Toilet_table.vue'
 
 
 const routes = [
-    { path: '/', component: Admin_edit_detail,}, //TopPageを表示
-    { path: '/:pathMatch(.*)*', redirect: '/User_basic_page' }, //存在しないパスにアクセスした場合はUser_basic_pageを表示
+    { path: '/', component: Admin_login,}, //TopPageを表示
+    { path: '/:pathMatch(.*)*', redirect: '/Admin_login' }, //存在しないパスにアクセスした場合はUser_basic_pageを表示
     //管理者側
     { path: '/Admin_login', component:Admin_login,},
     { path: '/Admin_signup', component:Admin_signup,},
