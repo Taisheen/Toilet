@@ -71,7 +71,7 @@ export default {
     </div>
 
     <div id="sign">
-        <router-link to="/Adminsignup">新規登録</router-link>
+        <router-link to="/Admin_signup">新規登録</router-link>
     </div>
   </v-main>
 </template>

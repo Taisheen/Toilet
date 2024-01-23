@@ -88,7 +88,7 @@ export default {
       <v-btn block id="button" height="50" color="#cdf9b8"  variant="flat" @click="signup">新規登録</v-btn>
     </div>
     <div id="login">
-        <router-link to="/Adminlogin">ログイン</router-link>
+        <router-link to="/Admin_login">ログイン</router-link>
     </div>
   </v-main>
 </template>
