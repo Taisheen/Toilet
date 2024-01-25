@@ -37,37 +37,37 @@ export const FireStore = reactive({
     //Firestoreに施設情報を追加する関数
     async createData(buildings) {
       //送られたbuildingsデータを一時的に格納する変数
-      // let old_data = buildings;
+      let old_data = buildings;
 
       //テスト用の確認データ
-      let old_data = [
-        {
-          building_name: "2号館",
-          floors:[
-            {
-              name: "2階",
-              num: 2,
-            },
-            {
-              name: "3階",
-              num: 2,
-            },
-          ]
-        },
-        {
-          building_name: "3号館",
-          floors:[
-            {
-              name: "1階",
-              num: 2,
-            },
-            {
-              name: "2階",
-              num: 2,
-            },
-          ]
-        },
-      ]
+      // let old_data = [
+      //   {
+      //     building_name: "2号館",
+      //     floors:[
+      //       {
+      //         name: "2階",
+      //         num: 2,
+      //       },
+      //       {
+      //         name: "3階",
+      //         num: 2,
+      //       },
+      //     ]
+      //   },
+      //   {
+      //     building_name: "3号館",
+      //     floors:[
+      //       {
+      //         name: "1階",
+      //         num: 2,
+      //       },
+      //       {
+      //         name: "2階",
+      //         num: 2,
+      //       },
+      //     ]
+      //   },
+      // ]
 
 
       //Firestoreに送るデータ
@@ -149,7 +149,7 @@ export const FireStore = reactive({
       const collectionRef = collection(db, "Toilet");
 
       //追加したドキュメントのIDを格納する変数
-      const add_id = ""
+      let add_id = ""
       //FirestoreのToiletコレクションにデータを追加
       await addDoc(collectionRef, upload_data).then((docRef) => {
         alert("追加しました")
@@ -157,7 +157,7 @@ export const FireStore = reactive({
         //追加したドキュメントのIDを格納
         add_id = docRef.id;
       }).catch((error) => {
-        console.error("エラー発生・データの追加に失敗しました： ", error);
+        console.error("エラー発生aaaa・データの追加に失敗しました： ", error);
       });
 
       //Sensorコレクションに上記のsensorsの数だけドキュメントを追加、作成したドキュメントのIDを対応するsensorsのidに格納
