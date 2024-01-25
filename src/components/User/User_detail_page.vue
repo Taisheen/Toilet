@@ -5,6 +5,8 @@
 -->
 <script setup>
 import router from "../../router";
+import blueImgSrc from "../../assets/Toilet_icon_blue.png";
+import redImgSrc from "../../assets/Toilet_icon_pink.png";
 </script>
 
 <script>
@@ -12,7 +14,7 @@ import { Toilet_table_data } from "../data/Toilet_table_data";
 import { FireStore } from "../../firebase/firestore";
 export default {
   mounted() {
-    FireStore.getData();
+    // FireStore.getData();
   },
   data() {
     return {
@@ -39,7 +41,8 @@ export default {
       >
         {{ floors.name }}
         <button id="Toilet_button">
-          <img src="../../assets/Toilet_icon_blue.png" />
+          <img v-if="floors.isOccupied == false" :src=redImgSrc alt="トイレアイコン">
+          <img v-else :src="blueImgSrc" alt="トイレアイコン">
         </button>
       </div>
     </div>
