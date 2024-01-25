@@ -8,7 +8,7 @@
 //import HelloWorld from './components/HelloWorld.vue'
 // 確認する場合は、↓のimportのfrom部分を確認したいファイルに変更する。
 //import TestPage from "./components/User/User_basic_page.vue";
-
+import router from "../../router";
 //パスワードの奴
 import { ref } from 'vue'
 import {firebaseauth} from '../../firebase/usesignup'
@@ -39,6 +39,8 @@ export default {
         //ユーザ登録
         async login(){
             await firebaseauth.login();
+            //管理者画面に遷移
+            router.push('/Admin_create_page')
         },
 
     }

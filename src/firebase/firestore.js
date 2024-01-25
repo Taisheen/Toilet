@@ -1,3 +1,4 @@
+// 作成者：平山太陽
 import { ref, reactive } from "vue";
 import {getFirestore , doc, getDoc,getDocs,query,where,setDoc,updateDoc,arrayUnion, collection, addDoc} from "firebase/firestore";
 
@@ -20,6 +21,9 @@ export const FireStore = reactive({
 
     //選択された階層のインデックス
     Select_Floors:1,
+
+    //選択されたsensorのインデックス
+    Select_Sensor:null,
 
     //ローディング中かどうか
     is_loading: false,
@@ -245,6 +249,31 @@ export const FireStore = reactive({
         })
       })
       */ 
+    },
+
+    //センサーの稼働状況を変更する関数
+    async changeSensorStatus(id,change){
+      this.is_loading = true;
+      let change_value = false;
+      //SensorコレクションのsensorStatusを変更する
+      if(change == 0){
+        change_value = true;
+      }
+      try {
+        const db = getFirestore()
+        const docRef = doc(db, "Sensor", id);
+        await updateDoc(docRef, {
+          sensorStatus: change_value
+        });
+        await this.getData();
+        this.Select_Sensor = null;
+        this.is_loading = false;
+        alert("変更しました")
+      }  catch (error) {
+        this.Select_Sensor = null;
+        this.is_loading = false;
+        console.error('データの更新に失敗しました:', error.message);
+      }
     },
 
     //Firestoreに施設情報を追加・変更する関数

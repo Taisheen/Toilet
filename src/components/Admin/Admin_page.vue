@@ -6,6 +6,8 @@
 
 <script setup>
 import router from "../../router";
+import blueImgSrc from "../../assets/Toilet_icon_blue.png";
+import redImgSrc from "../../assets/Toilet_icon_pink.png";
 </script>
 
 <script>
@@ -29,7 +31,7 @@ export default {
 };
 </script>
 <template>
-  <v-main>
+  <v-main v-if="!FireStore.is_loading">
     <div id="QR_domain_container">
       <div id="QR_domain">
         QRコード
@@ -42,7 +44,9 @@ export default {
       <div id="building_floors" v-for="(floors , index2) in buildings.floors" :key="floors">
         {{floors.name}}
         <button id="Toilet_button" @click= "GetIndex(index1,index2)">
-          <img src="../../assets/Toilet_icon_blue.png">
+          <!-- 表示する画像は、floors.floorOccupiedがtrueの場合、blue、falseの場合、pink -->
+          <img v-if="floors.floorOccupied == false" :src=redImgSrc alt="トイレアイコン">
+          <img v-else :src="blueImgSrc" alt="トイレアイコン">
         </button>
       </div>
     </div>

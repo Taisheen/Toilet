@@ -1,3 +1,7 @@
+/*
+作成者：兼松剛
+*/
+
 import {
     getAuth,
     signOut,
@@ -10,7 +14,7 @@ import {
   export const firebaseauth = reactive({
 
       // ログインしているユーザーデータ
-      currentUser:"",
+      currentUser: null,
 
        //ログイン認証用
       login_auth:null,
@@ -19,7 +23,7 @@ import {
       login_user:null,
 
       //ロード中かどうか
-      loading: false,
+      is_loading: false,
 
       //初期のログイン処理が完了したかどうか
       first_login: false,
@@ -71,6 +75,7 @@ import {
       async login() {
         // メールアドレスとパスワードが入力されているかを確認
         if (this.email === "" || this.password1 == "") return;
+        this.is_loading = true;
         const auth = getAuth();
         signInWithEmailAndPassword(auth, this.email, this.password1)
           .then((userCredential) => {
@@ -80,6 +85,7 @@ import {
             console.log(user);
             alert("ログイン成功")
             this.login_log=true
+            this.is_loading = false;
           })
           .catch((error) => {
             // 失敗時処理
@@ -88,7 +94,7 @@ import {
             console.log(errorCode, errorMessage);
             alert(this.errormoji(errorCode))
             alert(errorCode)
-           
+            this.is_loading = false;
           });
       },
 
@@ -101,24 +107,29 @@ import {
           alert("パスワードが一致しません。");
           return;
         }
-        
+
+        this.is_loading = true;
         createUserWithEmailAndPassword(auth, this.email, this.password1)
           .then((userCredential) => {
             // 成功時処理
             const user = userCredential.user;
             console.log(user);
+            alert("登録成功")
+            this.is_loading = false;
           })
           .catch((error) => {
             // 失敗時処理
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode, errorMessage);
+            this.is_loading = false;
             alert(this.errormoji(errorCode))
           });
           return;
       },
 
       async mounted() {
+        this.is_loading = true;
         const auth = getAuth();
         // ログインしているユーザーを取得する
         onAuthStateChanged(auth, (user) => {
@@ -134,15 +145,17 @@ import {
       async logout() {
         //ログアウト確認
         if (confirm("ログアウトしますか？")) {
+          this.is_loading = true;
+          //ログアウト処理
+          signOut(getAuth()).then(() => {
+            this.currentUser = null;
+            this.is_loading = false;
             //ログアウト処理
-            signOut(getAuth()).then(() => {
-
-                //ログアウト処理
-                alert("ログアウトしました。");
-                //routerの履歴を削除
-                router.go(0);
-                return;
-            })
+            alert("ログアウトしました。");
+            //routerの履歴を削除
+            router.go(0);
+            return;
+          })
         }
       },
       
