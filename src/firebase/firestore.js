@@ -26,9 +26,10 @@ export const FireStore = reactive({
 
     //firebaseからデータ(Toiletコレクション)を取得する関数
     async getData() {
-      is_loading = true;
+      this.is_loading = true;
       //idが空、””の場合、処理を終了
       if(this.Toilet_ID == "" || this.Toilet_ID == null) {
+        this.is_loading = false;
         alert("IDが空です")
         return;
       }
@@ -53,7 +54,6 @@ export const FireStore = reactive({
           //ToiletのデータにSensorのデータを追加する
           this.Toilet_table_items_db.buildings.forEach((building) => {
             building.floors.forEach((floor) => {
-              console.log("-----"+ building.name,floor.name+"--------");
               floor.floorOccupied = false;
               floor.sensors.forEach((sensor) => {
                 //Sensorのデータを追加する
@@ -71,24 +71,23 @@ export const FireStore = reactive({
                     //floorOccupiedを追加する floor内のsensors配列内のisOccupied,がtrueのものが１つでもある場合、floorOccupiedをtrueにする 逆にfalseしかない場合はfalse
                     if(sensor.isOccupied == true){
                       floor.floorOccupied = true;
-                      console.log("floorOccupiedはOnです");
                     }
                   }
                 })
               })
-              console.log("-----"+ floor.floorOccupied +"--------");
-              console.log("------------------");
             })
           })
           console.log("取得データ", this.Toilet_table_items_db);
-          is_loading = false;
+          this.is_loading = false;
       } else {
-          console.log("ドキュメントの取得に失敗しました・存在しないドキュメントです");
+        this.is_loading = false;
+        console.log("ドキュメントの取得に失敗しました・存在しないドキュメントです");
       }
     },
 
     //Firestoreに施設情報を追加する関数
     async createData(buildings) {
+      this.is_loading = true;
       //送られたbuildingsデータを一時的に格納する変数
       let old_data = buildings;
 
@@ -208,9 +207,11 @@ export const FireStore = reactive({
         alert("追加しました")
         console.log("追加されたドキュメントID: ", docRef.id);
         //追加したドキュメントのIDを格納
-        add_id = docRef.id;
+        // add_id = docRef.id;
+        this.is_loading = false;
       }).catch((error) => {
         console.error("エラー発生aaaa・データの追加に失敗しました： ", error);
+        this.is_loading = false;
       });
 
       //Sensorコレクションに上記のsensorsの数だけドキュメントを追加、作成したドキュメントのIDを対応するsensorsのidに格納
@@ -248,6 +249,7 @@ export const FireStore = reactive({
 
     //Firestoreに施設情報を追加・変更する関数
     async updateDetail(selectedImage,addmemo){
+      this.is_loading = true;
       //アップロードされた画像のパスを格納する変数
       let imagePass = null;
 
@@ -287,7 +289,9 @@ export const FireStore = reactive({
           const docRef = doc(db, "Toilet", this.Toilet_ID);
           await updateDoc(docRef, data);
           alert("更新しました")
+          this.is_loading = false;
         } catch (error) {
+          this.is_loading = false;
           console.error('データの更新に失敗しました:', error.message);
         }
       })

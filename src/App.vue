@@ -56,12 +56,14 @@ export default {
           </v-btn>
         </template>
       </v-app-bar>
+      <!-- loading用 backgroundcolorで透明度を高める -->
+      <VueElementLoading 
+        :active="(FireStore.is_loading == true)" 
+        is-full-screen
+        style="position: absolute; top: 64px; z-index: 1000; background-color:rgba(255, 255, 255, 0.5);">
+      </VueElementLoading>
       <v-main>
         <router-view />
-        <VueElementLoading 
-          :active="(FireStore.is_loading == true)" 
-          is-full-screen>
-        </VueElementLoading>
       </v-main>
     </v-app>
   </v-sheet>
