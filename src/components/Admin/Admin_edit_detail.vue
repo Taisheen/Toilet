@@ -6,6 +6,10 @@
 
 <script setup>
 import { FireStore } from "../../firebase/firestore";
+import blueImgSrc from "../../assets/Toilet_icon_blue.png";
+import redImgSrc from "../../assets/Toilet_icon_pink.png";
+import yellowImgSrc from "../../assets/Toilet_icon_yellow1.png"
+import router from "../../router";
 </script>
 
 <script>
@@ -22,11 +26,43 @@ export default {
   methods: {
     //トイレの個数増減
     addElement() {
-      this.elements.push({});
+      
     },
     removeElement() {
       if (this.elements.length > 0) {
         this.elements.pop();
+      }
+    },
+
+    //トイレアイコンが押されたときの処理
+    selectIndex(index) {
+      //すでに選択されている場合、選択を解除
+      if (FireStore.Select_Sensor == index) {
+        FireStore.Select_Sensor = null;
+      } else {
+        FireStore.Select_Sensor = index;
+      }
+    },
+
+    //状況アイコンが押されたときの処理
+    iconSelected(select){
+      //Select_Sensorが選択されている場合、状況アイコンを変更
+      if(FireStore.Select_Sensor != null){
+        if(select == 0){
+          //sensorStatusがtrueの場合、何もしない
+          if(FireStore.Toilet_table_items_db.buildings[FireStore.Index1].floors[FireStore.Index2].sensors[FireStore.Select_Sensor].sensorStatus == true){
+            return
+          }
+          FireStore.changeSensorStatus(FireStore.Toilet_table_items_db.buildings[FireStore.Index1].floors[FireStore.Index2].sensors[FireStore.Select_Sensor].id,select)
+        }else if(select == 1){
+          //sensorStatusがfalseの場合、何もしない
+          if(FireStore.Toilet_table_items_db.buildings[FireStore.Index1].floors[FireStore.Index2].sensors[FireStore.Select_Sensor].sensorStatus == false){
+            return
+          }
+          FireStore.changeSensorStatus(FireStore.Toilet_table_items_db.buildings[FireStore.Index1].floors[FireStore.Index2].sensors[FireStore.Select_Sensor].id,select)
+        }
+      }else{
+        alert("トイレを選択してください")
       }
     },
 
@@ -106,19 +142,11 @@ function Click() {
 
     <v-text class="building-name" name="building-name" placeholder="" />
     <div class="container">
-      <button class="btn" @click="removeElement"><strong>―</strong></button>
-      <button class="btn" @click="addElement"><strong>+</strong></button>
-      <div class="toilet-container">
-        <div class="rounded-container">
-          <input class="toilet-stairs-name" type="text" placeholder="1室" />
-          <img
-            src="../../assets/Toilet_icon_blue.png"
-            class="img"
-            alt="トイレ"
-          />
-        </div>
+      <!-- <button class="btn" @click="removeElement"><strong>―</strong></button>
+      <button class="btn" @click="addElement"><strong>+</strong></button> -->
+      <!-- <div class="toilet-container">
         <div
-          v-for="(element, index) in elements"
+          v-for="(element, index) in FireStore.Toilet_table_items_db.buildings[FireStore.Index1].floors[FireStore.Index2].sensors"
           :key="index"
           class="rounded-container"
         >
@@ -126,6 +154,7 @@ function Click() {
             class="toilet-stairs-name"
             type="text"
             :placeholder="index + 2 + '室 '"
+            v-model="element.name"
           />
           <img
             src="../../assets/Toilet_icon_blue.png"
@@ -134,13 +163,38 @@ function Click() {
             @click="selectedImage"
           />
         </div>
+      </div> -->
+
+      <!-- building_floorsはindexとselectIndexが一致する場合、ボーダーの色を赤にする -->
+      <div
+        id="building_floors"
+        v-for="(floors,index) in FireStore.Toilet_table_items_db.buildings[
+          FireStore.Index1
+        ].floors[FireStore.Index2].sensors"
+        :key="floors"
+        @click="selectIndex(index)"
+        :class="{ 'selected': index == FireStore.Select_Sensor }"
+      >
+        <input
+          class="toilet-stairs-name"
+          type="text"
+          :placeholder="index + 1 + '室 '"
+          v-model="floors.name"
+        />
+        <button id="Toilet_button">
+          <!-- 表示する画像は、floors.isOccupiedがtrueの場合、blue、falseの場合、pink sensorStatusがfalseの場合はyellow -->
+          <img v-if="floors.isOccupied == false && floors.sensorStatus == false" :src=yellowImgSrc alt="トイレアイコン">
+          <img v-else-if="floors.isOccupied == false" :src=redImgSrc alt="トイレアイコン">
+          <img v-else :src="blueImgSrc" alt="トイレアイコン">
+        </button>
       </div>
+
     </div>
 
     <v-container id="image">
       <v-row>
         <v-col>
-          <div id="bt">
+          <div id="bt" @click="iconSelected(0)">
             <div class="imgbt-container">
               <img
                 src="../../assets/Toilet_icon_blue1.png"
@@ -148,11 +202,11 @@ function Click() {
                 alt="空室"
               />
             </div>
-            <v-text style="font-weight: bold">空室</v-text>
+            <v-text style="font-weight: bold">稼働中</v-text>
           </div>
         </v-col>
-        <v-col>
-          <div id="bt">
+        <!-- <v-col>
+          <div id="bt" @click="iconSelected(0)">
             <div class="imgbt-container">
               <img
                 src="../../assets/Toilet_icon_pink1.png"
@@ -162,9 +216,9 @@ function Click() {
             </div>
             <v-text style="font-weight: bold">満室</v-text>
           </div>
-        </v-col>
+        </v-col> -->
         <v-col>
-          <div id="bt">
+          <div id="bt" @click="iconSelected(1)">
             <div class="imgbt-container">
               <img
                 src="../../assets/Toilet_icon_yellow1.png"
@@ -213,7 +267,7 @@ function Click() {
           <div id="back">
             <v-btn
               color="#cdf9b8"
-              onclick="location.href='./Admin/Admin_edit_page'"
+              @click="router.back()"
               >戻る</v-btn
             >
           </div>
@@ -231,6 +285,34 @@ function Click() {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@800&display=swap");
+
+#building_floors {
+  width: 155px;
+  height: 170px;
+  text-align: center;
+  font-size: 30px;
+  font-family: "Noto Sans JP", sans-serif;
+  display: inline-block;
+  border: 2px solid black;
+  background-color: white;
+  margin: 2px;
+  border-radius: 10px;
+}
+#building_floors.selected {
+  border: 2px solid red;
+}
+#Toilet_button img {
+  width: 150px;
+  height: 120px;
+  display: block;
+  border-top: 2px solid black;
+  border-bottom-right-radius: 7px;
+  border-bottom-left-radius: 7px;
+}
+/* #Toilet_button img:hover {
+  transform: translateY(2.5px);
+} */
+
 .buildingtext {
   margin-left: 10%;
   font-weight: bold;
@@ -291,6 +373,10 @@ function Click() {
 }
 .toilet-stairs-name {
   text-align: center;
+  width: 150px;
+  height: 30px;
+  font-size: 26px;
+  font-family: "Noto Sans JP", sans-serif;
 }
 
 .toilet-stairs-name:focus {
@@ -310,6 +396,33 @@ function Click() {
   .imgbt-container {
     min-width: 50px;
   }
+  #building_floors {
+    width: 115px;
+    height: 115px;
+    text-align: center;
+    font-size: 20px;
+    font-family: "Noto Sans JP", sans-serif;
+    display: inline-block;
+    border: 2px solid black;
+    background-color: white;
+    margin: 2px;
+    border-radius: 10px;
+  }
+  #Toilet_button img {
+    width: 110px;
+    height: 80px;
+    display: block;
+    border-top: 2px solid black;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+  }
+  .toilet-stairs-name {
+    text-align: center;
+    width: 100px;
+    height: 20px;
+    font-size: 20px;
+    font-family: "Noto Sans JP", sans-serif;
+  }
 }
 
 @media screen and (max-width: 500px) {
@@ -319,25 +432,69 @@ function Click() {
   .imgbt-container {
     min-width: 40px;
   }
+  #building_floors {
+    width: 95px;
+    height: 95px;
+    text-align: center;
+    font-size: 20px;
+    font-family: "Noto Sans JP", sans-serif;
+    display: inline-block;
+    border: 2px solid black;
+    background-color: white;
+    margin: 2px;
+    border-radius: 10px;
+  }
+  #Toilet_button img {
+    width: 90px;
+    height: 60px;
+    display: block;
+    border-top: 2px solid black;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+  }
+  .toilet-stairs-name {
+    text-align: center;
+    width: 80px;
+    height: 20px;
+    font-size: 20px;
+    font-family: "Noto Sans JP", sans-serif;
+  }
+}
+
+.container{
+ /* 中央揃えにする */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* 画面の横幅いっぱいに広げる */
+
 }
 .gazou {
   width: 100%;
   height: auto;
+  /* ボーダーを四角に設定 */
+  /* border: 3px solid black; */
+  /* 角丸にする */
+  /* border-radius: 10px; */
 }
 .imgbt-container {
   display: flex;
   flex-direction: column;
   width: 10%;
+  border-radius: 10px;
   /* flex-grow: 1; */
   min-width: 100px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   overflow: hidden;
-  border: 1px solid black transparent;
+  /* border: 1px solid black transparent; */
   /* &:hover {
     border: 2px solid black; 
   } */
   background-color: white;
-  margin: 0.3rem 0.3rem;
+  /* margin: 0.3rem 0.3rem; */
+}
+.imgbt-container:hover {
+  border: 3px solid black;
 }
 
 #bt {

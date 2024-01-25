@@ -7,6 +7,7 @@
 import router from "../../router";
 import blueImgSrc from "../../assets/Toilet_icon_blue.png";
 import redImgSrc from "../../assets/Toilet_icon_pink.png";
+import yellowImgSrc from "../../assets/Toilet_icon_yellow1.png"
 </script>
 
 <script>
@@ -41,7 +42,9 @@ export default {
       >
         {{ floors.name }}
         <button id="Toilet_button">
-          <img v-if="floors.isOccupied == false" :src=redImgSrc alt="トイレアイコン">
+          <!-- 表示する画像は、floors.isOccupiedがtrueの場合、blue、falseの場合、pink sensorStatusがfalseの場合はyellow -->
+          <img v-if="floors.isOccupied == false && floors.sensorStatus == false" :src=yellowImgSrc alt="トイレアイコン">
+          <img v-else-if="floors.isOccupied == false" :src=redImgSrc alt="トイレアイコン">
           <img v-else :src="blueImgSrc" alt="トイレアイコン">
         </button>
       </div>
