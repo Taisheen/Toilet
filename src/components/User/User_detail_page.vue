@@ -112,7 +112,8 @@ export default {
     transform: translateY(2.5px);
   }
   #floormap_container {
-    height: 450px;
+    /* height: 450px; */
+    height: auto;
     width: 370px;
     margin: auto;
     margin-top: 30px;
@@ -126,7 +127,8 @@ export default {
     font-family: "Noto Sans JP", sans-serif;
   }
   #memo_container {
-    height: 450px;
+    /* height: 450px; */
+    height: auto;
     width: 370px;
     margin: auto;
     padding: 20px;
@@ -179,7 +181,8 @@ export default {
     transform: translateY(2.5px);
   }
   #floormap_container {
-    height: 450px;
+    /* height: 450px; */
+    height: auto;
     width: 370px;
     margin: auto;
     margin-top: 30px;
@@ -193,7 +196,8 @@ export default {
     font-family: "Noto Sans JP", sans-serif;
   }
   #memo_container {
-    height: 450px;
+    /* height: 450px; */
+    height: auto;
     width: 370px;
     margin: auto;
     margin-top: 30px;
@@ -249,7 +253,8 @@ export default {
   }
 
   #floormap_container {
-    height: 500px;
+    /* height: 500px; */
+    height: auto;
     width: 400px;
     margin: auto;
     margin-bottom: 20px;
@@ -262,7 +267,8 @@ export default {
     font-family: "Noto Sans JP", sans-serif;
   }
   #memo_container {
-    height: 500px;
+    /* height: 500px; */
+    height: auto;
     width: 400px;
     margin: auto;
     padding: 40px;
