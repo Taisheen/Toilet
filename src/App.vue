@@ -58,6 +58,10 @@ export default {
       </v-app-bar>
       <v-main>
         <router-view />
+        <VueElementLoading 
+          :active="(FireStore.is_loading == true)" 
+          is-full-screen>
+        </VueElementLoading>
       </v-main>
     </v-app>
   </v-sheet>
