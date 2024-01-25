@@ -6,6 +6,8 @@
 
 <script setup>
 import router from "../router";
+import blueImgSrc from "../assets/Toilet_icon_blue.png";
+import redImgSrc from "../assets/Toilet_icon_pink.png";
 </script>
 
 <script>
@@ -18,7 +20,11 @@ export default {
     // if(this.$route.params.id != undefined){
     //   FireStore.Toilet_ID = this.$route.params.id.replace(":","")
       //FireStore.Toilet_table_items_dbにデータを代入
-      FireStore.getData()
+      this.is_loding = true
+      FireStore.getData().then(() => {
+        this.is_loding = false
+      })
+      this.is_loding = false
     // }else{
       //パラメータがない場合、トイレ一覧画面に遷移
   //     alert("パラメータがありません")
@@ -27,7 +33,11 @@ export default {
   data() {
     return {
       Toilet_table_data,
-      FireStore
+      FireStore,
+      is_loding: true,
+      //表示する画像のパス　floors.floorOccupiedがtrueの場合、blue、falseの場合、pink
+      // blue_img: require("../assets/Toilet_icon_blue.png"),
+      // red_img: require("../assets/Toilet_icon_pink.png"),
     };
   }, 
   methods:{
@@ -40,7 +50,7 @@ export default {
 };
 </script>
 <template>
-  <v-main>
+  <v-main v-if="!is_loding">
     <div id="building_container" v-for="(buildings, index1) in FireStore.Toilet_table_items_db.buildings" :key="buildings">
       <div id="building_name">  
        {{buildings.name}}
@@ -48,7 +58,9 @@ export default {
       <div id="building_floors" v-for="(floors , index2) in buildings.floors" :key="floors">
         {{floors.name}}
         <button id="Toilet_button" @click= "GetIndex(index1,index2)">
-          <img src="../assets/Toilet_icon_blue.png">
+          <!-- 表示する画像は、floors.floorOccupiedがtrueの場合、blue、falseの場合、pink -->
+          <img v-if="floors.floorOccupied == false" :src=redImgSrc alt="トイレアイコン">
+          <img v-else :src="blueImgSrc" alt="トイレアイコン">
         </button>
       </div>
     </div>

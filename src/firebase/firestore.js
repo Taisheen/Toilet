@@ -1,5 +1,5 @@
 import { ref, reactive } from "vue";
-import {getFirestore , doc, getDoc ,setDoc,updateDoc,arrayUnion, collection, addDoc} from "firebase/firestore";
+import {getFirestore , doc, getDoc,getDocs,query,where,setDoc,updateDoc,arrayUnion, collection, addDoc} from "firebase/firestore";
 
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL} from 'firebase/storage';
 import { getAuth } from "firebase/auth";
@@ -9,6 +9,8 @@ export const FireStore = reactive({
 
     //firebaseから取得したデータを格納する変数
     Toilet_table_items_db: [],
+
+    Sensors_db:[],
 
     //firebaseから取得するID
     Toilet_ID: "mJWV67TP4brb6Iw0t3OP", //仮用のID
@@ -32,10 +34,50 @@ export const FireStore = reactive({
       console.log("データを取得・・・・・・・・：", this.Toilet_ID);
       //firebaseからデータを取得
       const docRef = doc(db, "Toilet", this.Toilet_ID);
+      const sensorRef = collection(db, "Sensor");
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
           //firebaseから取得したデータを格納
           this.Toilet_table_items_db = docSnap.data();
+
+          //Sensorコレクションのデータを取得 クエリでidがToilet_IDのものを取得
+          const q = query(sensorRef, where("id", "==", this.Toilet_ID));
+          const querySnapshot = await getDocs(q);
+          querySnapshot.forEach((doc) => {
+            //取得したデータを格納
+            this.Sensors_db.push(doc.data());
+          });
+
+          //ToiletのデータにSensorのデータを追加する
+          this.Toilet_table_items_db.buildings.forEach((building) => {
+            building.floors.forEach((floor) => {
+              console.log("-----"+ building.name,floor.name+"--------");
+              floor.floorOccupied = false;
+              floor.sensors.forEach((sensor) => {
+                //Sensorのデータを追加する
+                //追加するのはsensorsの配列内のidとSensors_dbのidが一致するものを追加する
+                //isOccupiedに関してはsensorStatusがfalseの場合はfalseにする
+                //Toilet_table_items_dbにisOccupiedとsensorStatusは存在しないため、追加する
+                this.Sensors_db.forEach((sensor_db) => {
+                  // console.log(sensor_db.sensor_id);
+                  if(sensor.id == sensor_db.sensor_id){
+                    sensor.isOccupied = sensor_db.isOccupied;
+                    if(sensor_db.sensorStatus == false){
+                      sensor.isOccupied = false;
+                    }
+                    sensor.sensorStatus = sensor_db.sensorStatus;
+                    //floorOccupiedを追加する floor内のsensors配列内のisOccupied,がtrueのものが１つでもある場合、floorOccupiedをtrueにする 逆にfalseしかない場合はfalse
+                    if(sensor.isOccupied == true){
+                      floor.floorOccupied = true;
+                      console.log("floorOccupiedはOnです");
+                    }
+                  }
+                })
+              })
+              console.log("-----"+ floor.floorOccupied +"--------");
+              console.log("------------------");
+            })
+          })
           console.log("取得データ", this.Toilet_table_items_db);
       } else {
           console.log("ドキュメントの取得に失敗しました・存在しないドキュメントです");
@@ -287,7 +329,7 @@ export const FireStore = reactive({
                 },
                 {
                   name: "2-2",
-                  id: ""
+                  id: "60MeSD1Cqy4xYEnscpD3"
                 }
               ]
             },
@@ -297,12 +339,12 @@ export const FireStore = reactive({
               memo: "ウォシュレット有り",
               sensors: [
                 {
-                  "id": "",
+                  "id": "71g1ciRnYnt0Re9Vk9yp",
                   "name": "3-1"
                 },
                 {
                   "name": "3-2",
-                  "id": ""
+                  "id": "cwxHEAAuA5AovbAFDpbr"
                 }
               ]
             },
@@ -312,12 +354,12 @@ export const FireStore = reactive({
               memo: "ウォシュレット有り",
               sensors: [
                 {
-                  id: "",
+                  id: "60MeSD1Cqy4xYEnscpD3",
                   name: "4-1"
                 },
                 {
                   name: "4-2",
-                  id: ""
+                  id: "60MeSD1Cqy4xYEnscpD3"
                 }
               ]
             },
@@ -328,10 +370,10 @@ export const FireStore = reactive({
               sensors: [
                 {
                   name: "5-1",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 },
                 {
-                  id: "",
+                  id: "71g1ciRnYnt0Re9Vk9yp",
                   name: "5-2"
                 }
               ]
@@ -343,10 +385,10 @@ export const FireStore = reactive({
               sensors: [
                 {
                   name: "6-1",
-                  id: ""
+                  id: "60MeSD1Cqy4xYEnscpD3"
                 },
                 {
-                  id: "",
+                  id: "71g1ciRnYnt0Re9Vk9yp",
                   name: "6-2"
                 }
               ],
@@ -364,11 +406,11 @@ export const FireStore = reactive({
               sensors:[
                 {
                   name: "1-1",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 },
                 {
                   name: "1-2",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 }
               ]
             },
@@ -379,11 +421,11 @@ export const FireStore = reactive({
               sensors:[
                 {
                   name: "2-1",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 },
                 {
                   name: "2-2",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 }
               ]
             },
@@ -394,11 +436,11 @@ export const FireStore = reactive({
               sensors:[
                 {
                   name: "3-1",
-                  id: ""
+                  id: "60MeSD1Cqy4xYEnscpD3"
                 },
                 {
                   name: "3-2",
-                  id: ""
+                  id: "60MeSD1Cqy4xYEnscpD3"
                 }
               ]
             },
@@ -409,11 +451,11 @@ export const FireStore = reactive({
               sensors:[
                 {
                   name: "4-1",
-                  id: ""
+                  id: "60MeSD1Cqy4xYEnscpD3"
                 },
                 {
                   name: "4-2",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 }
               ]
             },
@@ -424,11 +466,11 @@ export const FireStore = reactive({
               sensors:[
                 {
                   name: "5-1",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 },
                 {
                   name: "5-2",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 }
               ]
             },
@@ -439,11 +481,11 @@ export const FireStore = reactive({
               sensors:[
                 {
                   name: "6-1",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 },
                 {
                   name: "6-2",
-                  id: ""
+                  id: "60MeSD1Cqy4xYEnscpD3"
                 }
               ]
             },
@@ -454,11 +496,11 @@ export const FireStore = reactive({
               sensors:[
                 {
                   name: "7-1",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 },
                 {
                   name: "7-2",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 }
               ]
             },
@@ -475,11 +517,11 @@ export const FireStore = reactive({
               sensors:[
                 {
                   name: "1-1",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 },
                 {
                   name: "1-2",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 }
               ]
             },
@@ -490,11 +532,11 @@ export const FireStore = reactive({
               sensors:[
                 {
                   name: "2-1",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 },
                 {
                   name: "2-2",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 }
               ]
             },
@@ -505,11 +547,11 @@ export const FireStore = reactive({
               sensors:[
                 {
                   name: "3-1",
-                  id: ""
+                  id: "60MeSD1Cqy4xYEnscpD3"
                 },
                 {
                   name: "3-2",
-                  id: ""
+                  id: "60MeSD1Cqy4xYEnscpD3"
                 }
               ]
             },
@@ -520,11 +562,11 @@ export const FireStore = reactive({
               sensors:[
                 {
                   name: "4-1",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 },
                 {
                   name: "4-2",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 }
               ]
             },
@@ -535,11 +577,11 @@ export const FireStore = reactive({
               sensors:[
                 {
                   name: "5-1",
-                  id: ""
+                  id: "71g1ciRnYnt0Re9Vk9yp"
                 },
                 {
                   name: "5-2",
-                  id: ""
+                  id: "60MeSD1Cqy4xYEnscpD3"
                 }
               ]
             }
