@@ -21,15 +21,17 @@ export const FireStore = reactive({
     //選択された階層のインデックス
     Select_Floors:1,
 
+    //ローディング中かどうか
+    is_loading: false,
+
     //firebaseからデータ(Toiletコレクション)を取得する関数
     async getData() {
+      is_loading = true;
       //idが空、””の場合、処理を終了
       if(this.Toilet_ID == "" || this.Toilet_ID == null) {
         alert("IDが空です")
         return;
       }
-
-
       const db = getFirestore()
       console.log("データを取得・・・・・・・・：", this.Toilet_ID);
       //firebaseからデータを取得
@@ -79,6 +81,7 @@ export const FireStore = reactive({
             })
           })
           console.log("取得データ", this.Toilet_table_items_db);
+          is_loading = false;
       } else {
           console.log("ドキュメントの取得に失敗しました・存在しないドキュメントです");
       }

@@ -14,13 +14,15 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
+import VueElementLoading from "vue-element-loading";
+
 // 以下を追加 **********/
 const vuetify = createVuetify({
     components,
     directives,
   })
 
-createApp(App).use(vuetify).use(router).mount('#app')
+createApp(App).use(vuetify).use(router).component("VueElementLoading", VueElementLoading).mount('#app')
 
 //カネマツfirebase
 

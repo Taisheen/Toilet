@@ -50,7 +50,7 @@ export default {
 };
 </script>
 <template>
-  <v-main v-if="!is_loding">
+  <v-main v-if="!FireStore.is_loading">
     <div id="building_container" v-for="(buildings, index1) in FireStore.Toilet_table_items_db.buildings" :key="buildings">
       <div id="building_name">  
        {{buildings.name}}
