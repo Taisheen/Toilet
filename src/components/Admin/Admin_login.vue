@@ -16,7 +16,7 @@ import { FireStore } from "../../firebase/firestore";
 
   const rules = {
     required: value => !!value || '必須.',
-    min: v => v.length >= 8 || '8文字以上',
+    min: v => v.length >= 6 || '6文字以上',
     emailMatch: () => (`入力したメールアドレスとパスワードが一致しません`),
   }
 
@@ -65,7 +65,7 @@ export default {
             :rules="[rules.required, rules.min]"
             :type="show1 ? 'text' : 'password'"
             name="input-10-1"
-            hint="At least 8 characters"
+    
             counter
             @click:append-inner="show1 = !show1">
       </v-text-field>
