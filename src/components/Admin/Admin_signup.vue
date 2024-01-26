@@ -16,7 +16,7 @@ import router from "../../router";
 
   const rules = {
     required: value => !!value || '必須.',
-    min: v => v.length >= 8 || '八文字以上',
+    min: v => v.length >= 6 || '6文字以上',
     emailMatch: () => (`メールアドレス、パスワードが一致しません`),
   }
   const show1 = ref(false)
@@ -33,8 +33,8 @@ import router from "../../router";
 export default {
     mounted(){
         //画面が表示されたら、入力フォームを空にする
-        firebaseauth.add_management_user.password1 = '';
-        firebaseauth.add_management_user.email = '';
+        // firebaseauth.add_management_user.password1 = '';
+        // firebaseauth.add_management_user.email = '';
     },
     data(){
         return{
@@ -68,7 +68,7 @@ export default {
             :rules="[rules.required, rules.min]"
             :type="show1 ? 'text' : 'password'"
             name="input-10-1"
-            hint="少なくとも8文字"
+            
             counter
             @click:append-inner="show1 = !show1">
       </v-text-field>
@@ -81,7 +81,7 @@ export default {
             :rules="[rules.required, rules.min]"
             :type="show2 ? 'text' : 'password'"
             name="input-10-1"
-            hint="少なくとも8文字"
+         
             counter
             @click:append-inner="show2 = !show2">
       </v-text-field>
