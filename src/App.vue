@@ -10,11 +10,13 @@ import { getAuth } from "firebase/auth";
 
 <script>
 import { FireStore }  from "./firebase/firestore";
+import { firebaseauth } from "./firebase/usesignup";
 
 export default {
   mounted(){
     //バックアップ復元用
     // FireStore.Backup_Upload()
+    firebaseauth.mounted()
   },
 
   data() {

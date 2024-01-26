@@ -14,6 +14,10 @@ import redImgSrc from "../../assets/Toilet_icon_pink.png";
 import { FireStore }  from "../../firebase/firestore";
 export default {
   mounted(){
+    if(FireStore.Toilet_ID == ""){
+      FireStore.getAdminData()
+    }
+    // FireStore.getAdminData()
     FireStore.getData()
   },
   data() {
@@ -36,6 +40,7 @@ export default {
       <div id="QR_domain">
         QRコード
       </div>
+      
     </div>
     <div id="building_container" v-for="(buildings, index1) in FireStore.Toilet_table_items_db.buildings" :key="buildings">
       <div id="building_name">
@@ -105,7 +110,6 @@ export default {
   #QR_domain{
     text-align: center;
     font-family: "Noto Sans JP", sans-serif;
-
   }
 }
 
