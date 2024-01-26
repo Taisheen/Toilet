@@ -17,18 +17,18 @@ export default {
   mounted(){
     //パラメータから値を取得し、FireStore.Toilet_Idに代入
     //:がある場合は、パラメータを取得する、その場合、:が含まれてしまうので、replaceで削除
-    // if(this.$route.params.id != undefined){
-    //   FireStore.Toilet_ID = this.$route.params.id.replace(":","")
-      //FireStore.Toilet_table_items_dbにデータを代入
+    if(this.$route.params.id != undefined){
+      FireStore.Toilet_ID = this.$route.params.id.replace(":","")
+      // FireStore.Toilet_table_items_dbにデータを代入
       this.is_loding = true
       FireStore.getData().then(() => {
         this.is_loding = false
       })
       this.is_loding = false
-    // }else{
-      //パラメータがない場合、トイレ一覧画面に遷移
-  //     alert("パラメータがありません")
-  //   }
+    }else{
+      // パラメータがない場合
+      alert("パラメータがありません")
+    }
   },
   data() {
     return {
@@ -44,7 +44,9 @@ export default {
     GetIndex:function(index1,index2){
       FireStore.Index1 = index1,
       FireStore.Index2 = index2
-      router.push('/User_detail_page')
+      //パラメータを付けて、遷移
+      // router.push('/User_detail_page')
+      router.push('/User_detail_page:' + FireStore.Toilet_ID)
     }
   }
 };
