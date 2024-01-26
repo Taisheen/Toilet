@@ -10,6 +10,8 @@ import {
     createUserWithEmailAndPassword,
   } from "firebase/auth";
   import { reactive } from "vue";
+import { FireStore } from "./firestore";
+import router from "../router";
 
   export const firebaseauth = reactive({
 
@@ -78,14 +80,16 @@ import {
         this.is_loading = true;
         const auth = getAuth();
         signInWithEmailAndPassword(auth, this.email, this.password1)
-          .then((userCredential) => {
+          .then(async (userCredential) => {
             // 成功時処理
             const user = userCredential.user;
             this.currentUser=user
             console.log(user);
+            await FireStore.getAdminData()
             alert("ログイン成功")
             this.login_log=true
             this.is_loading = false;
+            router.push("/Admin_page");
           })
           .catch((error) => {
             // 失敗時処理
@@ -135,8 +139,10 @@ import {
         onAuthStateChanged(auth, (user) => {
           if (user != null) {
             this.currentUser = user;
+            this.is_loading = false;
           } else {
             this.currentUser = null;
+            this.is_loading = false;
           }
         });
       },
@@ -150,6 +156,7 @@ import {
           signOut(getAuth()).then(() => {
             this.currentUser = null;
             this.is_loading = false;
+            FireStore.logout();
             //ログアウト処理
             alert("ログアウトしました。");
             //routerの履歴を削除

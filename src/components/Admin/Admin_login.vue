@@ -12,6 +12,7 @@ import router from "../../router";
 //パスワードの奴
 import { ref } from 'vue'
 import {firebaseauth} from '../../firebase/usesignup'
+import { FireStore } from "../../firebase/firestore";
 
   const rules = {
     required: value => !!value || '必須.',
@@ -28,8 +29,13 @@ import {firebaseauth} from '../../firebase/usesignup'
 export default {
     mounted(){
         //画面が表示されたら、入力フォームを空にする
-        // firebaseauth.add_management_user.password1 = '';
+        firebaseauth.email = '';
+        firebaseauth.password1 = '';
         // firebaseauth.add_management_user.email = '';
+        //既にログインしている場合、管理者画面に遷移
+        if(firebaseauth.currentUser != null){
+          router.push('/Admin_page')
+        }
     },
     data(){
         return{
@@ -38,9 +44,7 @@ export default {
     methods:{
         //ユーザ登録
         async login(){
-            await firebaseauth.login();
-            //管理者画面に遷移
-            router.push('/Admin_create_page')
+          await firebaseauth.login()
         },
 
     }

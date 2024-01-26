@@ -14,7 +14,8 @@ export const FireStore = reactive({
     Sensors_db:[],
 
     //firebaseから取得するID
-    Toilet_ID: "mJWV67TP4brb6Iw0t3OP", //仮用のID
+    // Toilet_ID: "mJWV67TP4brb6Iw0t3OP", //仮用のID
+    Toilet_ID: "",
 
     //選択された建物のインデックス
     Select_Building:0,
@@ -87,6 +88,28 @@ export const FireStore = reactive({
         this.is_loading = false;
         console.log("ドキュメントの取得に失敗しました・存在しないドキュメントです");
       }
+    },
+
+    //ログインしている管理者のToiletドキュメントを取得する関数
+    async getAdminData(){
+      this.is_loading = true;
+      try{
+        //firebaseからデータを取得
+        const db = getFirestore()
+        console.log("check：", firebaseauth.currentUser.uid);
+        //ドキュメント内のidがfirebaseauth.currentUser.uidのものを取得
+        const q = query(collection(db, "Toilet"), where("id", "==", firebaseauth.currentUser.uid));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          //取得したデータを格納
+          this.Toilet_ID = doc.id;
+        });
+        this.is_loading = false;
+      }catch(error){
+        this.is_loading = false;
+        console.log("ドキュメントの取得に失敗しました・存在しないドキュメントです");
+      }
+      
     },
 
     //Firestoreに施設情報を追加する関数
@@ -195,8 +218,8 @@ export const FireStore = reactive({
             })
           }
         }),
-        // id:firebaseauth.currentUser.uid,
-        id:"これはテスト用だよ！",
+        id:firebaseauth.currentUser.uid,
+        // id:"これはテスト用だよ！",
       }
       
       //Firestoreにデータを送信
@@ -339,6 +362,18 @@ export const FireStore = reactive({
         // console.error("User not authenticated.");
       // }
     },
+
+    //ログアウト時にデータを初期化する関数
+    logout(){
+      this.Toilet_table_items_db = [];
+      this.Sensors_db = [];
+      this.Toilet_ID = "";
+      this.Select_Building = 0;
+      this.Select_Floors = 1;
+      this.Select_Sensor = null;
+      this.is_loading = false;
+    },
+
 
 
 
