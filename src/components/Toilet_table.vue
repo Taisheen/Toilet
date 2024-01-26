@@ -44,7 +44,9 @@ export default {
     GetIndex:function(index1,index2){
       FireStore.Index1 = index1,
       FireStore.Index2 = index2
-      router.push('/User_detail_page')
+      //パラメータを付けて、遷移
+      // router.push('/User_detail_page')
+      router.push('/User_detail_page:' + FireStore.Toilet_ID)
     }
   }
 };
