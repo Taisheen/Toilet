@@ -52,14 +52,15 @@ export default {
     <div id="floormap_container">
       <div id="floormap">
         <h2>フロア図</h2>
-        <img
+      </div>
+      <img
+          id="floormap_img"
           :src="
             FireStore.Toilet_table_items_db.buildings[FireStore.Index1].floors[
               FireStore.Index2
             ].imagePass
           "
         />
-      </div>
     </div>
     <div id="memo_container">
       <div id="memo">
@@ -121,13 +122,20 @@ export default {
     margin: auto;
     margin-top: 30px;
     margin-bottom: 20px;
-    padding: 30px;
+    padding: 20px;
     border: 2px solid black;
     background: white;
     border-radius: 20px;
   }
   #floormap {
     font-family: "Noto Sans JP", sans-serif;
+  }
+  #floormap_img {
+    width: 320px;
+    height: auto;
+    /* 中央寄せ */
+    margin: auto;
+    display: block;
   }
   #memo_container {
     /* height: 450px; */
@@ -190,13 +198,20 @@ export default {
     margin: auto;
     margin-top: 30px;
     margin-bottom: 20px;
-    padding: 30px;
+    padding: 20px;
     border: 2px solid black;
     background: white;
     border-radius: 20px;
   }
   #floormap {
     font-family: "Noto Sans JP", sans-serif;
+  }
+  #floormap_img {
+    width: 320px;
+    height: auto;
+    /* 中央寄せ */
+    margin: auto;
+    display: block;
   }
   #memo_container {
     /* height: 450px; */
@@ -261,13 +276,20 @@ export default {
     width: 400px;
     margin: auto;
     margin-bottom: 20px;
-    padding: 40px;
+    padding: 20px;
     border: 2px solid black;
     background: white;
     border-radius: 20px;
   }
   #floormap {
     font-family: "Noto Sans JP", sans-serif;
+  }
+  #floormap_img {
+    width: 350px;
+    height: auto;
+    /* 中央寄せ */
+    margin: auto;
+    display: block;
   }
   #memo_container {
     /* height: 500px; */
