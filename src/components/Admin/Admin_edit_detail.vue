@@ -14,6 +14,11 @@ import router from "../../router";
 
 <script>
 export default {
+  mounted(){
+    console.log(FireStore.Select_Building)
+    console.log(FireStore.Select_Floors)
+
+  },
   data() {
     return {
       selectedImage: null,
@@ -50,16 +55,16 @@ export default {
       if(FireStore.Select_Sensor != null){
         if(select == 0){
           //sensorStatusがtrueの場合、何もしない
-          if(FireStore.Toilet_table_items_db.buildings[FireStore.Index1].floors[FireStore.Index2].sensors[FireStore.Select_Sensor].sensorStatus == true){
+          if(FireStore.Toilet_table_items_db.buildings[FireStore.Select_Building].floors[FireStore.Select_Floors].sensors[FireStore.Select_Sensor].sensorStatus == true){
             return
           }
-          FireStore.changeSensorStatus(FireStore.Toilet_table_items_db.buildings[FireStore.Index1].floors[FireStore.Index2].sensors[FireStore.Select_Sensor].id,select)
+          FireStore.changeSensorStatus(FireStore.Toilet_table_items_db.buildings[FireStore.Select_Building].floors[FireStore.Select_Floors].sensors[FireStore.Select_Sensor].id,select)
         }else if(select == 1){
           //sensorStatusがfalseの場合、何もしない
-          if(FireStore.Toilet_table_items_db.buildings[FireStore.Index1].floors[FireStore.Index2].sensors[FireStore.Select_Sensor].sensorStatus == false){
+          if(FireStore.Toilet_table_items_db.buildings[FireStore.Select_Building].floors[FireStore.Select_Floors].sensors[FireStore.Select_Sensor].sensorStatus == false){
             return
           }
-          FireStore.changeSensorStatus(FireStore.Toilet_table_items_db.buildings[FireStore.Index1].floors[FireStore.Index2].sensors[FireStore.Select_Sensor].id,select)
+          FireStore.changeSensorStatus(FireStore.Toilet_table_items_db.buildings[FireStore.Select_Building].floors[FireStore.Select_Floors].sensors[FireStore.Select_Sensor].id,select)
         }
       }else{
         alert("トイレを選択してください")
@@ -109,10 +114,10 @@ export default {
 
       async updates() {
       //画像アップロード
-      if (!this.selectedImage) {
-        console.error('No file selected.');
-        return;
-      }
+      // if (!this.selectedImage) {
+      //   console.error('No file selected.');
+      //   return;
+      // }
 
       FireStore.updateDetail(this.selectedImage,this.addmemo);
     },
@@ -131,10 +136,10 @@ function Click() {
   <v-main>
     <div id="selected_building_name">
       <h2>
-        {{ FireStore.Toilet_table_items_db.buildings[FireStore.Index1].name }}
+        {{ FireStore.Toilet_table_items_db.buildings[FireStore.Select_Building].name }}
         {{
-          FireStore.Toilet_table_items_db.buildings[FireStore.Index1].floors[
-            FireStore.Index2
+          FireStore.Toilet_table_items_db.buildings[FireStore.Select_Building].floors[
+            FireStore.Select_Floors
           ].name
         }}
       </h2>
@@ -169,8 +174,8 @@ function Click() {
       <div
         id="building_floors"
         v-for="(floors,index) in FireStore.Toilet_table_items_db.buildings[
-          FireStore.Index1
-        ].floors[FireStore.Index2].sensors"
+          FireStore.Select_Building
+        ].floors[FireStore.Select_Floors].sensors"
         :key="floors"
         @click="selectIndex(index)"
         :class="{ 'selected': index == FireStore.Select_Sensor }"

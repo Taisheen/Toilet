@@ -33,9 +33,9 @@ import router from "../../router";
 export default {
     mounted(){
         //画面が表示されたら、入力フォームを空にする
-        // firebaseauth.password1 = '';
-        // firebaseauth.password2 = '';
-        // firebaseauth.email = '';
+        firebaseauth.password1 = '';
+        firebaseauth.password2 = '';
+        firebaseauth.email = '';
 
         //既にログインしている場合、管理者画面に遷移
         if(firebaseauth.currentUser != null){
@@ -51,7 +51,7 @@ export default {
         async signup(){
             await firebaseauth.signup();
             //管理者画面に遷移
-            router.push('/Admin_create_page')
+            // router.push('/Admin_create_page')
         },
     }
 

@@ -13,10 +13,10 @@ import { FireStore }  from "./firebase/firestore";
 import { firebaseauth } from "./firebase/usesignup";
 
 export default {
-  mounted(){
+  async mounted(){
     //バックアップ復元用
     // FireStore.Backup_Upload()
-    firebaseauth.mounted()
+    await firebaseauth.mounted()
   },
 
   data() {
@@ -30,7 +30,7 @@ export default {
           //ユーザ登録
           async logout(){
               await firebaseauth.logout();
-              alert('ログアウト')
+              // alert('ログアウト')
           },
       },
 
