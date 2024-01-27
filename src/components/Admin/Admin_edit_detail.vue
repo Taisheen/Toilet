@@ -193,9 +193,17 @@ function Click() {
           <img v-else :src="blueImgSrc" alt="トイレアイコン">
         </button>
       </div>
-
+      
     </div>
-
+    <!-- 選択されたセンサーのIDを表示する -->
+    <div id="selected_sensor_id">
+      <p>選択されたセンサーID：
+        <a v-if="FireStore.Select_Sensor != null">{{ FireStore.Toilet_table_items_db.buildings[
+          FireStore.Select_Building
+        ].floors[FireStore.Select_Floors].sensors[FireStore.Select_Sensor].id}}</a>
+      </p>
+      
+    </div>
     <v-container id="image">
       <v-row>
         <v-col>
@@ -337,6 +345,17 @@ function Click() {
 /* #Toilet_button img:hover {
   transform: translateY(2.5px);
 } */
+#selected_sensor_id {
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 20px;
+  /* 中央揃えにする */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* 角丸にする */
+  margin: 10px 0px 10px 0px;
+
+}
 
 .buildingtext {
   margin-left: 10%;
