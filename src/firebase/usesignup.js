@@ -87,6 +87,7 @@ import router from "../router";
             console.log(user);
             await FireStore.getAdminData()
             alert("ログイン成功")
+            this.login_auth=true
             this.login_log=true
             this.is_loading = false;
             router.push("/Admin_page");
@@ -95,6 +96,8 @@ import router from "../router";
             // 失敗時処理
             const errorCode = error.code;
             const errorMessage = error.message;
+            this.login_auth=false
+            this.login_log=false
             console.log(errorCode, errorMessage);
             alert(this.errormoji(errorCode))
             alert(errorCode)
@@ -117,12 +120,18 @@ import router from "../router";
           .then((userCredential) => {
             // 成功時処理
             const user = userCredential.user;
+            this.login_auth=true
+            this.login_log=true
             console.log(user);
-            alert("登録成功")
             this.is_loading = false;
+            alert("登録成功")
+            router.push("/Admin_create_page");
+            
           })
           .catch((error) => {
             // 失敗時処理
+            this.login_auth=false
+            this.login_log=false
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode, errorMessage);
@@ -139,9 +148,13 @@ import router from "../router";
         onAuthStateChanged(auth, (user) => {
           if (user != null) {
             this.currentUser = user;
+            this.login_auth=true
+            this.login_log=true
             this.is_loading = false;
           } else {
             this.currentUser = null;
+            this.login_auth=false
+            this.login_log=false
             this.is_loading = false;
           }
         });
@@ -155,6 +168,8 @@ import router from "../router";
           //ログアウト処理
           signOut(getAuth()).then(() => {
             this.currentUser = null;
+            this.login_auth=false
+            this.login_log=false
             this.is_loading = false;
             FireStore.logout();
             //ログアウト処理

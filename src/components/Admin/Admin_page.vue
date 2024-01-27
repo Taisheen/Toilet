@@ -8,10 +8,12 @@
 import router from "../../router";
 import blueImgSrc from "../../assets/Toilet_icon_blue.png";
 import redImgSrc from "../../assets/Toilet_icon_pink.png";
+// const qrcode_value = ref('');  // ref に変更し、初期値を設定する  
 </script>
 
 <script>
 import { FireStore }  from "../../firebase/firestore";
+import VueQrcode from "@chenfengyuan/vue-qrcode";
 export default {
   mounted(){
     if(FireStore.Toilet_ID == ""){
@@ -20,28 +22,56 @@ export default {
     // FireStore.getAdminData()
     FireStore.getData()
   },
+  components: {
+    VueQrcode
+  },
   data() {
     return {
-      FireStore
+      FireStore,
+      qrcode_value: "",
+      option: {
+        errorCorrectionLevel: "M",
+        maskPattern: 0,
+        margin: 10,
+        scale: 2,
+        width: 300,
+        color: {
+          dark: "#000000FF",
+          light: "#FFFFFFFF"
+        }
+      }
     };
   }, 
   methods:{
     GetIndex:function(index1,index2){
-      FireStore.Index1 = index1,
-      FireStore.Index2 = index2
+      FireStore.Select_Building = index1,
+      FireStore.Select_Floors = index2
+      console.log(FireStore.Select_Building)
+      console.log(FireStore.Select_Floors)
       router.push('/Admin_edit_detail')
+    },
+    // QRコードを生成する
+    generate:function(){
+      this.qrcode_value = "https://painappuru-toilet.web.app/User_basic_page:"+FireStore.Toilet_ID
+      console.log(this.qrcode_value)
+      //この関数を呼び出すと引数に渡した画像をStorageにアップロードする
+      // FireStore.uploadQRcode(this.qrcode_value)
     }
   }
 };
 </script>
 <template>
-  <v-main v-if="!FireStore.is_loading">
-    <div id="QR_domain_container">
+  <v-main v-if="!FireStore.is_loading" >
+    <!-- QRコードがdbにない場合生成するボタンを表示する -->
+    <div id="QR_domain_container" v-if="qrcode_value">
       <div id="QR_domain">
-        QRコード
+        <p>QRコード</p>
       </div>
-      
+      <div id="QR_code">
+        <VueQrcode v-if="qrcode_value" :value="qrcode_value" :options="option" tag="img" id="QR_code"></VueQrcode>
+      </div>
     </div>
+    <button id="QR_button" @click="generate" v-else>表示用QRコードを生成する</button>
     <div id="building_container" v-for="(buildings, index1) in FireStore.Toilet_table_items_db.buildings" :key="buildings">
       <div id="building_name">
        {{buildings.name}}
@@ -100,8 +130,8 @@ export default {
   }
   #QR_domain_container{
     border: 2px solid black;
-    height: 150px;
-    width: 250px;
+    height: 120px;
+    width: 100px;
     margin:auto;
     margin-bottom: 0px;
     background-color:white;
@@ -110,6 +140,28 @@ export default {
   #QR_domain{
     text-align: center;
     font-family: "Noto Sans JP", sans-serif;
+  }
+  #QR_code{
+    width: 80px;
+    height: 80px;
+    margin: auto;
+    /* 中央寄せ */
+    display: block;
+  }
+  #QR_button{
+    margin: 0 auto;
+    margin-top: 10px;
+    display: block;
+    border-radius: 10px;
+    border: 2px solid black;
+    background-color: white;
+    font-size: 20px;
+    font-family: "Noto Sans JP", sans-serif;
+    transition: .3s;
+    padding: 5px;
+  }
+  #QR_button:hover{
+    transform:translateY(1.5px);
   }
 }
 
@@ -155,8 +207,8 @@ export default {
   }
   #QR_domain_container{
     border: 2px solid black;
-    height: 150px;
-    width: 250px;
+    height: 120px;
+    width: 120px;
     margin:auto;
     margin-bottom: 0px;
     background-color:white;
@@ -166,6 +218,28 @@ export default {
     text-align: center;
     font-family: "Noto Sans JP", sans-serif;
 
+  }
+  #QR_code{
+    width: 80px;
+    height: 80px;
+    margin: auto;
+    /* 中央寄せ */
+    display: block;
+  }
+  #QR_button{
+    margin: 0 auto;
+    margin-top: 10px;
+    display: block;
+    border-radius: 10px;
+    border: 2px solid black;
+    background-color: white;
+    font-size: 20px;
+    font-family: "Noto Sans JP", sans-serif;
+    transition: .3s;
+    padding: 5px;
+  }
+  #QR_button:hover{
+    transform:translateY(1.5px);
   }
   
 }
@@ -211,7 +285,7 @@ export default {
   #QR_domain_container{
     border: 2px solid black;
     height: 150px;
-    width: 250px;
+    width: 150px;
     margin:auto;
     margin-bottom: 0px;
     background-color:white;
@@ -220,7 +294,28 @@ export default {
   #QR_domain{
     text-align: center;
     font-family: "Noto Sans JP", sans-serif;
-
+  }
+  #QR_code{
+    width: 120px;
+    height: 120px;
+    margin: auto;
+    /* 中央寄せ */
+    display: block;
+  }
+  #QR_button{
+    margin: 0 auto;
+    margin-top: 10px;
+    display: block;
+    border-radius: 10px;
+    border: 2px solid black;
+    background-color: white;
+    font-size: 20px;
+    font-family: "Noto Sans JP", sans-serif;
+    transition: .3s;
+    padding: 5px;
+  }
+  #QR_button:hover{
+    transform:translateY(1.5px);
   }
 }
 </style>

@@ -5,6 +5,8 @@ import {getFirestore , doc, getDoc,getDocs,query,where,setDoc,updateDoc,arrayUni
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL} from 'firebase/storage';
 import { getAuth } from "firebase/auth";
 import { firebaseauth } from "./usesignup";
+import router from "../router";
+import { QRCode } from "qrcode";
 
 export const FireStore = reactive({
 
@@ -231,11 +233,12 @@ export const FireStore = reactive({
       let add_id = ""
       //FirestoreのToiletコレクションにデータを追加
       await addDoc(collectionRef, upload_data).then((docRef) => {
-        alert("追加しました")
+        // alert("追加しました")
         console.log("追加されたドキュメントID: ", docRef.id);
         //追加したドキュメントのIDを格納
         // add_id = docRef.id;
-        this.is_loading = false;
+        this.Toilet_ID = docRef.id;
+        // this.is_loading = false;
       }).catch((error) => {
         console.error("エラー発生aaaa・データの追加に失敗しました： ", error);
         this.is_loading = false;
@@ -252,27 +255,46 @@ export const FireStore = reactive({
       }
       */
       // 書き込み回数が多いため、念のためコメントアウト
-      /*
       const sensorRef = collection(db, "Sensor");
       console.log("Sensorコレクションにデータを追加・・・・・・・・");
       upload_data.buildings.forEach((building) => {
         building.floors.forEach((floor) => {
           floor.sensors.forEach((sensor) => {
-            addDoc(sensorRef, {
-              name: sensor.name,
+            //あらかじめ生成したidを基にSensorコレクションにデータを追加
+            setDoc(doc(sensorRef, sensor.id), {
               isOccupied:false,
               sensorStatus:false,
-              toilet_id: add_id
+              id: this.Toilet_ID,
+              sensor_id: sensor.id
             }).then((docRef) => {
-              console.log("追加されたドキュメントID: ", docRef.id);
+              // console.log("追加されたドキュメントID: ", docRef.id);
             }).catch((error) => {
               console.error("エラー発生・データの追加に失敗しました： ", error);
             });
+
+            // addDoc(sensorRef, {
+            //   name: sensor.name,
+            //   isOccupied:false,
+            //   sensorStatus:false,
+            //   id: this.Toilet_ID,
+            //   sensor_id: sensor.id
+            // }).then((docRef) => {
+            //   console.log("追加されたドキュメントID: ", docRef.id);
+            // }).catch((error) => {
+            //   console.error("エラー発生・データの追加に失敗しました： ", error);
+            // });
           })
         })
       })
-      */ 
+      this.is_loading = false;
+      router.push("/Admin_page");
     },
+
+    //QRコードを生成する関数
+    async createQRcode() {
+      
+    },
+
 
     //センサーの稼働状況を変更する関数
     async changeSensorStatus(id,change){
@@ -327,10 +349,13 @@ export const FireStore = reactive({
 
           //送られたデータを一時的に格納する変数
           let data = this.Toilet_table_items_db;
+          console.log(addmemo)
+          console.log(this.Select_Building)
+          console.log(this.Select_Floors)
 
           //選択された建物と階層のフロアのメモを更新
           data.buildings[this.Select_Building].floors[this.Select_Floors].memo = addmemo;
-
+          console.log(data)
           //選択された建物と階層のフロアの画像パスを更新(ある場合のみ)
           if(imagePass){
             data.buildings[this.Select_Building].floors[this.Select_Floors].imagePass = imagePass;

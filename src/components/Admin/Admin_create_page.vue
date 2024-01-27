@@ -47,10 +47,9 @@ import { FireStore } from '../../firebase/firestore';
           this.buildings.pop();
         }
       },
-      create(){
+      async create(){
         if(!this.buildings.length == 0){
-          FireStore.createData(this.buildings)
-          router.push('/Admin_page')
+          await FireStore.createData(this.buildings)
         }
       }
     },
