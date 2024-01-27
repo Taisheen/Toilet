@@ -119,7 +119,7 @@ export default {
       //   return;
       // }
 
-      FireStore.updateDetail(this.selectedImage,this.addmemo);
+      FireStore.updateDetail(this.selectedImage,FireStore.Toilet_table_items_db.buildings[FireStore.Select_Building].floors[FireStore.Select_Floors].memo);
     },
   },
 };
@@ -251,8 +251,26 @@ function Click() {
     </v-container>
     <v-img
       id="image-zu"
-      v-if="selectedImage"
+      v-if="selectedImage != null"
       :src="selectedImage"
+      max-width="500"
+      max-height="500"
+    />
+    <v-img
+      id="image-zu"
+      v-if=" selectedImage == null && 
+      FireStore.Toilet_table_items_db.buildings[
+          FireStore.Select_Building
+        ].floors[FireStore.Select_Floors].imagePass != null &&
+        FireStore.Toilet_table_items_db.buildings[
+          FireStore.Select_Building
+        ].floors[FireStore.Select_Floors].imagePass != undefined &&
+        FireStore.Toilet_table_items_db.buildings[
+          FireStore.Select_Building
+        ].floors[FireStore.Select_Floors].imagePass != ''"
+      :src="FireStore.Toilet_table_items_db.buildings[
+          FireStore.Select_Building
+        ].floors[FireStore.Select_Floors].imagePass"
       max-width="500"
       max-height="500"
     />
@@ -260,7 +278,9 @@ function Click() {
     <div id="memof">
       <v-textarea
         id="memo"
-        v-model="addmemo"
+        v-model="FireStore.Toilet_table_items_db.buildings[
+          FireStore.Select_Building
+        ].floors[FireStore.Select_Floors].memo"
         label="メモ"
         variant="solo"
       ></v-textarea>
